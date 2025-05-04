@@ -1,0 +1,130 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cursorinsight/cursorrules/main/schema.json",
+  "documentation": {
+    "style": "comentários claros e objetivos em português explicando o propósito de cada função, componente, classe ou trecho de lógica relevante",
+    "languages": ["pt-BR"]
+  },
+  "architecture": {
+    "hashBasedRouting": true,
+    "avoidQueryParams": {
+      "enabled": true,
+      "exceptions": ["variações de produto", "reset-password tokens"],
+      "renderInHTML": false
+    },
+    "seo": {
+      "cleanUrls": true,
+      "metaTags": true,
+      "schemaMarkup": ["Product", "Organization", "Breadcrumb", "FAQ"],
+      "robotsTxt": true,
+      "sitemapXml": true,
+      "openGraph": true,
+      "twitterCard": true,
+      "canonicalTag": true
+    },
+    "routing": {
+      "infiniteScroll": {
+        "useHash": true
+      },
+      "middlewareRedirects": true
+    }
+  },
+  "conventions": {
+    "naming": {
+      "folders": "kebab-case",
+      "files": "kebab-case",
+      "components": "PascalCase",
+      "functions": "camelCase",
+      "constants": "UPPER_CASE"
+    },
+    "code": {
+      "typescript": true,
+      "nextjs": true,
+      "eslint": true,
+      "prettier": true,
+      "importOrder": [
+        "react",
+        "next",
+        "bibliotecas externas",
+        "componentes locais",
+        "estilos",
+        "tipagens"
+      ]
+    }
+  },
+  "security": {
+    "jwt": true,
+    "httpOnlyCookies": true,
+    "rateLimiting": true,
+    "passwordHashing": "bcrypt",
+    "tokenExpiration": {
+      "resetPassword": "1h"
+    },
+    "noTokenExposure": true
+  },
+  "performance": {
+    "optimizeImages": true,
+    "cdn": true,
+    "preloadCriticalAssets": true,
+    "cacheHeaders": true,
+    "lighthouseScore": {
+      "minMobile": 90,
+      "minDesktop": 90
+    },
+    "ttfb": "<500ms",
+    "cls": "<0.1"
+  },
+  "adminPanel": {
+    "roles": ["admin", "editor"],
+    "defaultRole": "editor",
+    "accessControl": true
+  },
+  "files": {
+    "readme": "README.md",
+    "environment": ".env.local",
+    "rules": ".cursorrules"
+  },
+  "testing": {
+    "unitTests": true,
+    "e2eTests": true,
+    "coverage": {
+      "minCoverage": 80
+    }
+  },
+  "ci": {
+    "githubActions": true,
+    "deployment": {
+      "staging": true,
+      "production": true
+    }
+  },
+  "monitoring": {
+    "errorTracking": true,
+    "analytics": true,
+    "logging": true
+  },
+  "versioning": {
+    "semanticVersioning": true,
+    "changelog": true,
+    "releaseBranches": ["main", "develop"]
+  },
+  "accessibility": {
+    "wcag": {
+      "level": "AA",
+      "compliance": true
+    },
+    "ariaLabels": true,
+    "keyboardNavigation": true,
+    "colorContrast": true
+  },
+  "api": {
+    "documentation": {
+      "swagger": true,
+      "openapi": true,
+      "endpoints": {
+        "versioning": true,
+        "authentication": true,
+        "rateLimiting": true
+      }
+    }
+  }
+}

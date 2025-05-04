@@ -1,0 +1,10 @@
+[auth]
+token=your-sentry-auth-token
+
+[defaults]
+org=your-org
+project=your-project
+
+[build]
+upload_source_maps=true
+source_map_path_prefix=~/ 

@@ -1,0 +1,564 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["toutspecial"]
+}
+
+/// Modelo para endereços dos clientes
+model address {
+  address_id   String     @id @db.Uuid
+  customer_id  String?    @db.Uuid
+  zipcode      String     @db.VarChar(8)  // CEP brasileiro
+  street       String     @db.VarChar(200)
+  number       String     @db.VarChar(10)
+  complement   String?    @db.VarChar(100)
+  neighborhood String     @db.VarChar(100)
+  city         String     @db.VarChar(100)
+  state        String     @db.VarChar(2)  // UF brasileira
+  customers    customers? @relation(fields: [customer_id], references: [customer_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([customer_id], map: "idx_address_customer_id")
+  @@schema("toutspecial")
+}
+
+/// Modelo para marcas de produtos
+model brands {
+  id              String  @id @db.Uuid
+  name            String? @db.VarChar(100)
+  slug            String? @unique @db.VarChar(100)
+  description     String? @db.Text
+  seo_title       String? @db.VarChar(60)
+  seo_description String? @db.VarChar(160)
+  logo_url        String? @db.VarChar(255)
+  products        products[]
+
+  @@schema("toutspecial")
+}
+
+/// Modelo para categorias de produtos
+model categories {
+  category_id        String               @id @db.Uuid
+  name               String?              @db.VarChar(100)
+  slug               String?              @unique @db.VarChar(100)
+  parent_id          String?              @db.Uuid
+  description        String?              @db.Text
+  thumbnail          String?              @db.VarChar(255)
+  menu_order         Int?
+  seo_title          String?              @db.VarChar(60)
+  seo_description    String?              @db.VarChar(160)
+  is_active          Boolean?             @default(true)
+  updated_at         DateTime?            @db.Timestamp(6)
+  coupon_categories  coupon_categories[]
+  product_categories product_categories[]
+
+  @@schema("toutspecial")
+}
+
+/// Modelo para cores de produtos
+model colors {
+  color_id   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @unique @db.VarChar(100)
+  hex_code   String    @db.Char(7)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([hex_code], map: "idx_colors_hex_code")
+  @@schema("toutspecial")
+}
+
+/// Modelo para cupons de desconto
+model coupon {
+  coupon_id         String              @id
+  discount_type     discount_type_enum
+  discount_value    Decimal             @db.Decimal(10, 2)
+  free_shipping     Boolean?            @default(false)
+  start_at          DateTime?           @db.Timestamp(6)
+  end_at            DateTime?           @db.Timestamp(6)
+  is_active         Boolean?            @default(true)
+  is_global         Boolean?            @default(false)
+  coupon_categories coupon_categories[]
+  coupon_products   coupon_products[]
+  order_items       order_items[]
+
+  @@schema("toutspecial")
+}
+
+model coupon_categories {
+  coupon_id   String
+  category_id String     @db.Uuid
+  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: Cascade, onUpdate: NoAction)
+  coupon      coupon     @relation(fields: [coupon_id], references: [coupon_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([coupon_id, category_id])
+  @@index([category_id], map: "idx_coupon_categories_category_id")
+  @@schema("toutspecial")
+}
+
+model coupon_products {
+  coupon_id  String
+  product_id String   @db.Uuid
+  coupon     coupon   @relation(fields: [coupon_id], references: [coupon_id], onDelete: Cascade, onUpdate: NoAction)
+  products   products @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([coupon_id, product_id])
+  @@index([product_id], map: "idx_coupon_products_product_id")
+  @@schema("toutspecial")
+}
+
+/// Modelo para clientes
+model customers {
+  customer_id       String            @id @db.Uuid
+  name              String            @db.VarChar(100)
+  email             String            @unique @db.VarChar(255)
+  document          BigInt?
+  password_hash     String            @db.VarChar(255)
+  phone             String?           @db.VarChar(20)
+  birth_date        DateTime?         @db.Date
+  gender            gender_enum?
+  created_at        DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?         @default(now()) @db.Timestamp(6)
+  created_by        String?           @db.Uuid
+  updated_by        String?           @db.Uuid
+  lgpd_consent      Boolean?          @default(false)
+  lgpd_consent_date DateTime?         @db.Timestamp(6)
+  address           address[]
+  orders            orders[]
+  product_reviews   product_reviews[]
+
+  @@index([email], map: "idx_customers_email")
+  @@index([document], map: "idx_customers_document")
+  @@index([created_at, lgpd_consent], map: "idx_customers_created_consent")
+  @@schema("toutspecial")
+}
+
+model garment_types {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @unique @db.VarChar(100)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("toutspecial")
+}
+
+model login_attempts {
+  ip_address    String    @id
+  attempts      Int?
+  blocked_until DateTime? @db.Timestamp(6)
+
+  @@schema("toutspecial")
+}
+
+model occasions {
+  occasions_id String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String    @unique(map: "idx_occasions_name") @db.VarChar(100)
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+  updated_at   DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("toutspecial")
+}
+
+model order_items {
+  id               String            @id @db.Uuid
+  order_id         String?           @db.Uuid
+  product_id       String?           @db.Uuid
+  variant_id       String?           @db.Uuid
+  quantity         Int
+  unit_price       Decimal?          @db.Decimal(10, 2)
+  discount_amount  Decimal?          @db.Decimal(10, 2)
+  coupon_id        String?
+  coupon           coupon?           @relation(fields: [coupon_id], references: [coupon_id], onDelete: NoAction, onUpdate: NoAction)
+  orders           orders?           @relation(fields: [order_id], references: [order_id], onDelete: Cascade, onUpdate: NoAction)
+  products         products?         @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  product_variants product_variants? @relation(fields: [variant_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([order_id], map: "idx_order_items_order_id")
+  @@index([product_id], map: "idx_order_items_product_id")
+  @@index([variant_id], map: "idx_order_items_variant_id")
+  @@schema("toutspecial")
+}
+
+model order_tracking {
+  id          String    @id @db.Uuid
+  order_id    String?   @db.Uuid
+  status      String?
+  description String?
+  location    String?
+  happened_at DateTime? @db.Timestamp(6)
+  metadata    Json?
+  orders      orders?   @relation(fields: [order_id], references: [order_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([order_id], map: "idx_order_tracking_order_id")
+  @@index([status], map: "idx_order_tracking_status")
+  @@schema("toutspecial")
+}
+
+/// Modelo para pedidos
+model orders {
+  order_id            String             @id @db.Uuid
+  customer_id         String?            @db.Uuid
+  status              order_status
+  subtotal            Decimal?           @db.Decimal(10, 2)
+  shipping_cost       Decimal?           @db.Decimal(10, 2)
+  discount            Decimal?           @db.Decimal(10, 2)
+  total               Decimal?           @db.Decimal(10, 2)
+  shipping_method     String?
+  payment_method      String?
+  tracking_code       String?
+  estimated_delivery  DateTime?          @db.Date
+  shipping_estimate   String?
+  shipping_data       Json?
+  shipping_carrier_id String?            @db.Uuid
+  created_at          DateTime?          @default(now()) @db.Timestamp(6)
+  updated_at          DateTime?          @default(now()) @db.Timestamp(6)
+  created_by          String?            @db.Uuid
+  updated_by          String?            @db.Uuid
+  order_items         order_items[]
+  order_tracking      order_tracking[]
+  customers           customers?         @relation(fields: [customer_id], references: [customer_id], onDelete: NoAction, onUpdate: NoAction)
+  shipping_carriers   shipping_carriers? @relation(fields: [shipping_carrier_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([created_at], map: "idx_orders_created_at")
+  @@index([customer_id], map: "idx_orders_customer_id")
+  @@index([status], map: "idx_orders_status")
+  @@index([created_at, status], map: "idx_orders_created_status")
+  @@index([customer_id, status], map: "idx_orders_customer_status")
+  @@schema("toutspecial")
+}
+
+model password_reset_tokens {
+  id         String    @id @db.Uuid
+  user_id    String?   @db.Uuid
+  token_hash String?
+  expires_at DateTime? @db.Timestamp(6)
+  used       Boolean?
+
+  @@schema("toutspecial")
+}
+
+model product_cache {
+  product_id  String    @id @db.Uuid
+  cached_data Json?
+  expires_at  DateTime? @db.Timestamp(6)
+  products    products  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("toutspecial")
+}
+
+model product_categories {
+  product_id  String     @db.Uuid
+  category_id String     @db.Uuid
+  categories  categories @relation(fields: [category_id], references: [category_id], onDelete: NoAction, onUpdate: NoAction)
+  products    products   @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([product_id, category_id])
+  @@schema("toutspecial")
+}
+
+model product_images {
+  image_id      String    @id @db.Uuid
+  product_id    String?   @db.Uuid
+  url           String?
+  alt_text      String?
+  display_order Int?
+  products      products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("toutspecial")
+}
+
+model product_reviews {
+  review_id      String         @id @db.Uuid
+  customer_id    String?        @db.Uuid
+  product_id     String?        @db.Uuid
+  rating         Int
+  comment        String?
+  reply          String?
+  is_highlighted Boolean?       @default(false)
+  status         review_status? @default(pending)
+  created_at     DateTime?      @default(now()) @db.Timestamp(6)
+  updated_at     DateTime?      @default(now()) @db.Timestamp(6)
+  user_agent     String?
+  customers      customers?     @relation(fields: [customer_id], references: [customer_id], onDelete: NoAction, onUpdate: NoAction)
+  products       products?      @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([customer_id, product_id], map: "uniq_customer_product_review")
+  @@index([product_id], map: "idx_product_reviews_product_id")
+  @@schema("toutspecial")
+}
+
+model product_tags {
+  product_id String   @db.Uuid
+  tag_id     String   @db.Uuid
+  products   products @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+  tags       tags     @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([product_id, tag_id])
+  @@schema("toutspecial")
+}
+
+model product_variants {
+  id                String        @id @db.Uuid
+  product_id        String?       @db.Uuid
+  sku               String?       @unique
+  ean               String?       @unique
+  size_id           String?       @db.Uuid
+  color_id          String?       @db.Uuid
+  stock             Int?
+  price             Decimal?      @db.Decimal
+  buy_price         Decimal?      @db.Decimal
+  promotional_price Decimal?      @db.Decimal
+  variant_images    Json?         @db.Json
+  is_default        Boolean?
+  order_items       order_items[]
+  products          products?     @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("toutspecial")
+}
+
+/// Modelo para produtos
+model products {
+  product_id        String               @id @db.Uuid
+  name              String               @db.VarChar(255)
+  slug              String?              @unique @db.VarChar(255)
+  description       String?              @db.Text
+  short_description String?              @db.VarChar(160)
+  price             Decimal?             @db.Decimal(10, 2)
+  buy_price         Decimal?             @db.Decimal(10, 2)
+  promotional_price Decimal?             @db.Decimal(10, 2)
+  sku               String?              @db.VarChar(50)
+  ean               String?              @unique @db.VarChar(13)
+  weight            Decimal?             @db.Decimal(10, 3)
+  height            Decimal?             @db.Decimal(10, 2)
+  width             Decimal?             @db.Decimal(10, 2)
+  length            Decimal?             @db.Decimal(10, 2)
+  brand_id          String?              @db.Uuid
+  is_active         Boolean?             @default(true)
+  product_type      product_type         @default(physical)
+  stock_status      stock_status         @default(in_stock)
+  sale_type         sale_type           @default(unitaria)
+  created_at        DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?            @default(now()) @db.Timestamp(6)
+  created_by        String?              @db.Uuid
+  updated_by        String?              @db.Uuid
+  seo_title         String?              @db.VarChar(60)
+  seo_description   String?              @db.VarChar(160)
+  product_images    product_images[]
+  product_variants  product_variants[]
+  product_categories product_categories[]
+  product_tags      product_tags[]
+  product_reviews   product_reviews[]
+  order_items       order_items[]
+  product_cache     product_cache?
+  brands            brands?              @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  coupon_products   coupon_products[]
+  showcase_products showcase_products[]
+  product_attributes product_attributes[]
+  main_bundles      product_bundles[]    @relation("main_product")
+  bundled_products  product_bundles[]    @relation("bundled_product")
+  product_downloads product_downloads[]
+
+  @@index([brand_id], map: "idx_products_brand_id")
+  @@index([is_active], map: "idx_products_is_active")
+  @@index([sku], map: "idx_products_sku")
+  @@index([created_at, is_active], map: "idx_products_created_active")
+  @@index([price, is_active], map: "idx_products_price_active")
+  @@index([product_type, is_active], map: "idx_products_type_active")
+  @@index([stock_status, is_active], map: "idx_products_stock_active")
+  @@schema("toutspecial")
+}
+
+model product_attributes {
+  id          String    @id @db.Uuid
+  product_id  String    @db.Uuid
+  name        String    @db.VarChar(100)
+  value       String    @db.Text
+  products    products  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([product_id], map: "idx_product_attributes_product_id")
+  @@schema("toutspecial")
+}
+
+model product_bundles {
+  id                String    @id @db.Uuid
+  product_id        String    @db.Uuid
+  bundled_product_id String   @db.Uuid
+  quantity          Int
+  discount          Decimal?  @db.Decimal(5, 2)
+  main_product      products  @relation("main_product", fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  bundled_product   products  @relation("bundled_product", fields: [bundled_product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([product_id], map: "idx_product_bundles_product_id")
+  @@index([bundled_product_id], map: "idx_product_bundles_bundled_id")
+  @@schema("toutspecial")
+}
+
+model product_downloads {
+  id          String    @id @db.Uuid
+  product_id  String    @db.Uuid
+  name        String    @db.VarChar(255)
+  url         String    @db.VarChar(255)
+  file_size   Int?
+  file_type   String?   @db.VarChar(50)
+  products    products  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([product_id], map: "idx_product_downloads_product_id")
+  @@schema("toutspecial")
+}
+
+model redirects {
+  redirect_id String    @id @db.Uuid
+  old_path    String
+  new_path    String
+  is_active   Boolean?  @default(true)
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([old_path], map: "idx_redirects_old_path")
+  @@schema("toutspecial")
+}
+
+model shipping_carriers {
+  id            String   @id @db.Uuid
+  carrier_id    String?
+  name          String?
+  is_active     Boolean? @default(true)
+  delivery_time Int?
+  fee           Decimal? @db.Decimal(10, 2)
+  orders        orders[]
+
+  @@schema("toutspecial")
+}
+
+model shipping_settings {
+  id                   String   @id @db.Uuid
+  free_shipping_sp     Decimal? @db.Decimal(10, 2)
+  free_shipping_others Decimal? @db.Decimal(10, 2)
+  extra_days           Int?
+  safety_margin        Decimal? @db.Decimal(5, 2)
+  is_active            Boolean? @default(true)
+  api_key              String?
+  sandbox              Boolean? @default(false)
+  default_carrier      String?
+
+  @@schema("toutspecial")
+}
+
+model showcase_products {
+  showcase_id   String    @db.Uuid
+  product_id    String    @db.Uuid
+  display_order Int?
+  products      products  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  showcases     showcases @relation(fields: [showcase_id], references: [showcase_id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([showcase_id, product_id])
+  @@index([product_id], map: "idx_showcase_products_product_id")
+  @@schema("toutspecial")
+}
+
+model showcases {
+  showcase_id       String              @id @db.Uuid
+  name              String
+  description       String?
+  type              String
+  limite            Int
+  is_active         Boolean             @default(true)
+  showcase_products showcase_products[]
+
+  @@schema("toutspecial")
+}
+
+model sizes {
+  size_id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  label         String    @db.VarChar(20)
+  numeric_value Int?
+  size_system   String?   @db.VarChar(10)
+  ordering      Int?
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  updated_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@unique([label, size_system], map: "idx_sizes_label_system")
+  @@index([ordering], map: "idx_sizes_ordering")
+  @@schema("toutspecial")
+}
+
+model store_reviews {
+  review_id  String    @id @db.Uuid
+  name       String
+  email      String?
+  rating     Int
+  comment    String?
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@index([rating], map: "idx_store_reviews_rating")
+  @@schema("toutspecial")
+}
+
+model tags {
+  tag_id       String         @id @db.Uuid
+  name         String?        @unique
+  showcase_id  String?
+  product_tags product_tags[]
+
+  @@schema("toutspecial")
+}
+
+enum discount_type_enum {
+  percentage
+  fixed
+
+  @@schema("toutspecial")
+}
+
+enum gender_enum {
+  female
+  male
+  other
+
+  @@schema("toutspecial")
+}
+
+enum order_status {
+  pending
+  paid
+  shipped
+  canceled
+  delivered
+
+  @@schema("toutspecial")
+}
+
+enum review_status {
+  pending
+  approved
+  rejected
+
+  @@schema("toutspecial")
+}
+
+enum product_type {
+  physical
+  bundle
+  service
+
+  @@schema("toutspecial")
+}
+
+enum stock_status {
+  in_stock
+  out_of_stock
+  pre_order
+  discontinued
+
+  @@schema("toutspecial")
+}
+
+enum sale_type {
+  unitaria
+  bundle
+  subscription
+
+  @@schema("toutspecial")
+}
