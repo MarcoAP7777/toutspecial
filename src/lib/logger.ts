@@ -1,25 +1,21 @@
 import pino from 'pino';
 
 const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
   transport: {
     target: 'pino-pretty',
     options: {
       colorize: true,
-      translateTime: 'SYS:standard',
-      ignore: 'pid,hostname',
     },
-  },
-  base: {
-    env: process.env.NODE_ENV,
   },
 });
 
 export const log = {
-  info: (message: string, data?: any) => logger.info(data, message),
-  warn: (message: string, data?: any) => logger.warn(data, message),
-  error: (message: string, data?: any) => logger.error(data, message),
-  debug: (message: string, data?: any) => logger.debug(data, message),
+  debug: (message: string, data?: unknown) => logger.debug(data, message),
+  info: (message: string, data?: unknown) => logger.info(data, message),
+  warn: (message: string, data?: unknown) => logger.warn(data, message),
+  error: (message: string, data?: unknown) => logger.error(data, message),
+  fatal: (message: string, data?: unknown) => logger.fatal(data, message),
 };
 
 // Intercepta console.log e redireciona para o logger

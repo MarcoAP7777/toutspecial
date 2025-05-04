@@ -1,25 +1,18 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
-import RootLayout from '../layout';
 
-// Adiciona tipos globais do Jest
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeInTheDocument(): R;
-    }
-  }
-}
+import { render, screen } from '@testing-library/react';
+
+import RootLayout from '../layout';
 
 describe('RootLayout', () => {
   it('renders children correctly', () => {
-    const { getByText } = render(
+    render(
       <RootLayout>
         <div>Test Content</div>
       </RootLayout>
     );
 
-    expect(getByText('Test Content')).toBeInTheDocument();
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
   it('has correct metadata', () => {
