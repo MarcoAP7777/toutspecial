@@ -162,8 +162,8 @@ O banco de dados utiliza PostgreSQL com o schema `toutspecial`. A modelagem foi 
 
 ```sql
 -- Buscar produtos ativos com preço entre X e Y
-SELECT * FROM toutspecial.products 
-WHERE is_active = true 
+SELECT * FROM toutspecial.products
+WHERE is_active = true
 AND price BETWEEN 100 AND 200
 ORDER BY created_at DESC;
 
@@ -220,7 +220,7 @@ LEFT JOIN toutspecial.coupon_products cp ON c.coupon_id = cp.coupon_id
 LEFT JOIN toutspecial.coupon_categories cc ON c.coupon_id = cc.coupon_id
 LEFT JOIN toutspecial.product_categories pc ON cc.category_id = pc.category_id
 WHERE c.is_active = true
-AND (c.is_global = true 
+AND (c.is_global = true
      OR cp.product_id = 'uuid-do-produto'
      OR pc.product_id = 'uuid-do-produto')
 AND (c.start_at IS NULL OR c.start_at <= NOW())
@@ -238,4 +238,4 @@ AND (c.end_at IS NULL OR c.end_at >= NOW());
 1. Implementar validações de preço na camada de aplicação
 2. Adicionar triggers para validações complexas no banco de dados
 3. Implementar particionamento de tabelas grandes
-4. Otimizar queries complexas 
+4. Otimizar queries complexas

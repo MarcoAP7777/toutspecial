@@ -141,8 +141,8 @@ Cache: Upstash
 CDN e segurança: Cloudflare
 
 graph TD
-    A[Frontend Next.js] -->|API| B[Backend Node.js/Express]
-    B -->|Query| C[(PostgreSQL)]
-    B -->|Cache| D[Redis]
-    A -->|Assets| E[Cloudflare CDN]
-    C -->|Backup| F[Cloud Storage]
+A[Frontend Next.js] -->|API| B[Backend Node.js/Express]
+B -->|Query| C[(PostgreSQL)]
+B -->|Cache| D[Redis]
+A -->|Assets| E[Cloudflare CDN]
+C -->|Backup| F[Cloud Storage]

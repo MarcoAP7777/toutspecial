@@ -19,8 +19,9 @@ Garantir imagens com alt otimizados, com fallback automático baseado no meta ti
 Atualizar sitemaps XML automaticamente, via webhook, a cada novo produto ou categoria.
 
 Estratégia Adotada
+
 1. URL Única com Scroll Infinito
-As páginas de categoria utilizam scroll infinito, com hashes opcionais (#2, #3) apenas para marcação visual de progresso.
+   As páginas de categoria utilizam scroll infinito, com hashes opcionais (#2, #3) apenas para marcação visual de progresso.
 
 O carregamento de conteúdo adicional não modifica a URL base — o Google vê uma única página canônica.
 
@@ -31,7 +32,7 @@ Exemplo:
 /vestidos-juvenis-para-festa#2 (navegação do usuário, ignorada por bots)
 
 2. Renderização Otimizada para Bots
-O servidor detecta crawlers como Googlebot e Bingbot via User-Agent.
+   O servidor detecta crawlers como Googlebot e Bingbot via User-Agent.
 
 Para esses bots, a renderização é feita via SSR com carregamento antecipado de até 80 produtos, simulando a rolagem completa.
 
@@ -42,9 +43,9 @@ Indexação completa da categoria em uma única URL.
 Percepção de página rica e com alto volume de conteúdo.
 
 3. Limites Parametrizáveis
-Público	Limite por Página	Tipo de Carregamento
-Usuário final	40 produtos	Scroll infinito (dinâmico)
-Bots	80 produtos	SSR (pré-renderizado no servidor)
+   Público Limite por Página Tipo de Carregamento
+   Usuário final 40 produtos Scroll infinito (dinâmico)
+   Bots 80 produtos SSR (pré-renderizado no servidor)
 
 Os limites são dinâmicos e configuráveis, podendo variar conforme campanha, sazonalidade ou tipo de categoria.
 
@@ -54,6 +55,7 @@ As páginas de categoria possuem canonical fixo, sempre apontando para a URL pri
 html
 Copiar
 Editar
+
 <link rel="canonical" href="https://www.toutspecial.com.br/vestidos-juvenis-para-festa" />
 Não se utiliza rel="next" ou rel="prev", pois a paginação é dinâmica.
 
@@ -103,4 +105,3 @@ Considerações Finais
 Esta estratégia depende de coordenação entre frontend e backend, renderização adaptada e testes contínuos com ferramentas como Google Search Console e Lighthouse. Está em conformidade com as diretrizes do Google para conteúdo dinâmico e totalmente integrada à modelagem de dados e infraestrutura do projeto.
 
 Nota: Este documento deve ser consultado sempre que forem feitas alterações na renderização de categorias, estrutura de produto ou comportamento de paginação.
-

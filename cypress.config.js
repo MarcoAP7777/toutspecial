@@ -1,4 +1,4 @@
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
@@ -17,16 +17,16 @@ module.exports = defineConfig({
       // implement node event listeners here
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.name === 'chrome') {
-          launchOptions.args.push('--disable-dev-shm-usage')
-          return launchOptions
+          launchOptions.args.push('--disable-dev-shm-usage');
+          return launchOptions;
         }
-      })
+      });
     },
     env: {
       'cypress-react-selector': {
-        root: '#__next'
-      }
-    }
+        root: '#__next',
+      },
+    },
   },
   component: {
     devServer: {
@@ -36,4 +36,4 @@ module.exports = defineConfig({
     specPattern: 'cypress/component/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'cypress/support/component.js',
   },
-}) 
+});

@@ -33,12 +33,14 @@ Este documento define as diretrizes de estilo de código para o projeto e-commer
 ## 🧠 Convenções de Código
 
 ### Geral
+
 - Sempre usar **TypeScript** com tipagens explícitas.
 - Nomes descritivos, **sem abreviações confusas**.
 - Comentários apenas quando necessário para **clareza do negócio**, não para descrever lógica óbvia.
 - Preferência por **funções puras e reutilizáveis**.
 
 ### Imports
+
 - Usar `@/` para caminhos absolutos (ex: `@/components/Banner`)
 - Agrupar e ordenar:
   1. Módulos externos
@@ -46,12 +48,14 @@ Este documento define as diretrizes de estilo de código para o projeto e-commer
   3. Estilos
 
 ### Nomeação
+
 - Componentes React: `PascalCase`
 - Funções: `camelCase`
 - Constantes globais: `UPPER_CASE`
 - Arquivos: `kebab-case.tsx` ou `.ts`
 
 ### Componentes
+
 - **Funcionais (function components)** com arrow functions
 - Usar **React.FC** apenas se precisar de children tipados
 - Evitar `any` — preferir tipos ou `unknown`
@@ -100,7 +104,6 @@ refactor: melhoria de código sem alterar comportamento
 style: formatação, indentação, etc
 test: criação ou ajuste de testes
 chore: tarefas auxiliares
-
 
 ---
 
@@ -153,4 +156,3 @@ chore: tarefas auxiliares
 - [`README.md`](../README.md) — visão geral do projeto
 - [`infra.md`](./infra.md) — infraestrutura técnica e arquitetura
 - [`etapas.md`](./etapas.md) — planejamento modular do desenvolvimento
-

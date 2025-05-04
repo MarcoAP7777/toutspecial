@@ -9,6 +9,7 @@ O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para g
 ## 🏗️ Arquitetura
 
 ### Frontend
+
 - Next.js com SSR/SSG
 - TypeScript
 - Tailwind CSS
@@ -16,12 +17,14 @@ O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para g
 - SEO avançado com schema markup
 
 ### Backend
+
 - APIs Node.js/Express
 - PostgreSQL com Prisma
 - Redis para cache
 - Webhooks para integrações
 
 ### Infraestrutura
+
 - Vercel (frontend)
 - Render/Railway (backend)
 - Cloudflare (CDN e segurança)
@@ -30,6 +33,7 @@ O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para g
 ## 🚀 Como Rodar Localmente
 
 ### Pré-requisitos
+
 - Node.js 18.x
 - npm 9.x
 - PostgreSQL 13.x
@@ -38,28 +42,33 @@ O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para g
 ### Instalação
 
 1. Clone o repositório:
+
 ```bash
 git clone https://github.com/seu-usuario/toutspecial.git
 cd toutspecial
 ```
 
 2. Instale as dependências:
+
 ```bash
 npm install
 ```
 
 3. Configure as variáveis de ambiente:
+
 ```bash
 cp .env.example .env.local
 # Edite o .env.local com suas configurações
 ```
 
 4. Inicie o banco de dados:
+
 ```bash
 npm run db:setup
 ```
 
 5. Inicie o servidor de desenvolvimento:
+
 ```bash
 npm run dev
 ```
@@ -98,11 +107,13 @@ src/
 ## 🌐 Ambiente
 
 ### Desenvolvimento
+
 - URL: http://localhost:3000
 - API: http://localhost:3000/api
 - Admin: http://localhost:3000/admin
 
 ### Produção
+
 - URL: https://toutspecial.com.br
 - API: https://api.toutspecial.com.br
 - Admin: https://admin.toutspecial.com.br
@@ -133,6 +144,7 @@ O deploy é automatizado via GitHub Actions:
 ## 📊 Logs
 
 Logs estruturados com os seguintes níveis:
+
 - ERROR - Erros críticos
 - WARN - Avisos
 - INFO - Informações gerais

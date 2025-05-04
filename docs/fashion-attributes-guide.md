@@ -6,22 +6,22 @@ typescript
 Copiar
 Editar
 export enum GarmentType {
-  DRESS = 'vestido',
-  BLOUSE = 'blusa',
-  SKIRT = 'saia',
-  PANTS = 'calça',
-  JACKET = 'jaqueta',
-  SWIMWEAR = 'maiô/biquíni',
-  UNDERWEAR = 'lingerie'
+DRESS = 'vestido',
+BLOUSE = 'blusa',
+SKIRT = 'saia',
+PANTS = 'calça',
+JACKET = 'jaqueta',
+SWIMWEAR = 'maiô/biquíni',
+UNDERWEAR = 'lingerie'
 }
 Esses valores são utilizados em filtros, estrutura de URL, agrupamento por categorias e marcação de dados estruturados (Schema Markup).
 
 ✅ Recomendação Google: para productType use descrições detalhadas e específicas sempre que possível. Exemplo: vestido midi de algodão.
 
 🎨 Paleta de Cores Padronizadas
-Nome Técnico	Código HEX	Exemplo Visual
-Vermelho Cetim	#FF355E	
-Azul Marinho	#1D334A	
+Nome Técnico Código HEX Exemplo Visual
+Vermelho Cetim #FF355E
+Azul Marinho #1D334A
 
 ⚠️ A cor principal cadastrada no produto deve seguir essa nomenclatura padronizada. Use nomes reconhecíveis (ex: “Azul Marinho”) para SEO e Schema.
 
@@ -52,11 +52,11 @@ typescript
 Copiar
 Editar
 const occasions = [
-  'trabalho', 
-  'festa',
-  'casual',
-  'praia',
-  'esporte'
+'trabalho',
+'festa',
+'casual',
+'praia',
+'esporte'
 ];
 Esses valores podem ser usados como filtros na vitrine e também integrados ao Schema Markup como parte do atributo suitableFor.
 
@@ -76,32 +76,32 @@ Mostre o produto em uso (modelo), variações de cor e detalhes
 🧩 Integração com Schema Markup
 Todos os atributos listados devem ser compatíveis com a estrutura do Product ou WearableSizeSystem descrita em schema-strategy.md.
 
-Atributo	Campo Schema.org
-garmentType	productType
-fabricComposition	material
-occasion	suitableFor
-color	color
-size	size
-brand	brand
-image	image
-gtin / ean	gtin13
-sku	sku
-price	offers.price
-availability	offers.availability
-condition	offers.itemCondition
+Atributo Campo Schema.org
+garmentType productType
+fabricComposition material
+occasion suitableFor
+color color
+size size
+brand brand
+image image
+gtin / ean gtin13
+sku sku
+price offers.price
+availability offers.availability
+condition offers.itemCondition
 
 💡 Dica Avançada: utilizar isVariantOf e hasVariant em produtos com variações melhora a estrutura do catálogo no Google.
 
 🧪 Checklist para Rich Snippets de Produtos
-Item	Obrigatório p/ Google	Campo
-Nome do Produto	✅	name
-Descrição	✅	description
-Preço	✅	offers.price
-Disponibilidade	✅	offers.availability
-Condição (novo/usado)	✅	offers.itemCondition
-Imagem Principal	✅	image
-Marca	✅	brand
-GTIN (EAN)	✅	gtin13
-SKU	✅	sku
-Avaliação Média	Opcional	aggregateRating
-Número de Avaliações	Opcional	reviewCount
+Item Obrigatório p/ Google Campo
+Nome do Produto ✅ name
+Descrição ✅ description
+Preço ✅ offers.price
+Disponibilidade ✅ offers.availability
+Condição (novo/usado) ✅ offers.itemCondition
+Imagem Principal ✅ image
+Marca ✅ brand
+GTIN (EAN) ✅ gtin13
+SKU ✅ sku
+Avaliação Média Opcional aggregateRating
+Número de Avaliações Opcional reviewCount

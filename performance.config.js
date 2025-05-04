@@ -33,4 +33,4 @@ module.exports = {
     outputDir: 'performance-reports',
     format: 'html',
   },
-} 
+};

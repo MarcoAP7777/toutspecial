@@ -1,8 +1,8 @@
-const nextJest = require('next/jest')
+const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({
   dir: './',
-})
+});
 
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
@@ -17,7 +17,7 @@ const customJestConfig = {
     '^@services/(.*)$': '<rootDir>/src/services/$1',
     '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
     '^@contexts/(.*)$': '<rootDir>/src/contexts/$1',
-    '^@utils/(.*)$': '<rootDir>/src/utils/$1'
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
   },
   collectCoverage: true,
   collectCoverageFrom: [
@@ -28,7 +28,7 @@ const customJestConfig = {
     '!**/node_modules/**',
     '!src/pages/_app.tsx',
     '!src/pages/_document.tsx',
-    '!src/pages/api/**/*.ts'
+    '!src/pages/api/**/*.ts',
   ],
   coverageThreshold: {
     global: {
@@ -38,15 +38,8 @@ const customJestConfig = {
       statements: 80,
     },
   },
-  testPathIgnorePatterns: [
-    '<rootDir>/node_modules/',
-    '<rootDir>/.next/',
-    '<rootDir>/cypress/'
-  ],
-  transformIgnorePatterns: [
-    '/node_modules/',
-    '^.+\\.module\\.(css|sass|scss)$',
-  ],
-}
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/', '<rootDir>/cypress/'],
+  transformIgnorePatterns: ['/node_modules/', '^.+\\.module\\.(css|sass|scss)$'],
+};
 
-module.exports = createJestConfig(customJestConfig) 
+module.exports = createJestConfig(customJestConfig);

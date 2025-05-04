@@ -18,11 +18,13 @@
 ## Processo de Desenvolvimento
 
 1. **Desenvolvimento Local**
+
    - Clone o repositório
    - Instale as dependências: `npm install`
    - Execute o servidor de desenvolvimento: `npm run dev`
 
 2. **Testes**
+
    - Execute os testes unitários: `npm run test`
    - Execute os testes E2E: `npm run cypress:open`
 
@@ -44,4 +46,4 @@
 
 ## Suporte
 
-Em caso de dúvidas, abra uma issue no GitHub ou entre em contato com a equipe de desenvolvimento. 
+Em caso de dúvidas, abra uma issue no GitHub ou entre em contato com a equipe de desenvolvimento.

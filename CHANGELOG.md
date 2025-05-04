@@ -8,6 +8,7 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 ## [Não Publicado]
 
 ### Adicionado
+
 - Configuração inicial do projeto
 - Estrutura base do Next.js
 - Configuração de ESLint e Prettier
@@ -15,13 +16,17 @@ e este projeto adere a [Semantic Versioning](https://semver.org/lang/pt-BR/).
 - Documentação inicial
 
 ### Alterado
+
 - N/A
 
 ### Removido
+
 - N/A
 
 ### Corrigido
+
 - N/A
 
 ### Segurança
-- N/A 
+
+- N/A

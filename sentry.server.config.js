@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/nextjs'
+import * as Sentry from '@sentry/nextjs';
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -10,8 +10,8 @@ Sentry.init({
   ],
   beforeSend(event) {
     if (event.user) {
-      delete event.user.email
+      delete event.user.email;
     }
-    return event
+    return event;
   },
-}) 
+});

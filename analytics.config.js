@@ -21,4 +21,4 @@ module.exports = {
     cookieConsent: true,
     gdprCompliant: true,
   },
-} 
+};

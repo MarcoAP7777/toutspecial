@@ -28,30 +28,27 @@ components/
 ## Exemplo de Componente
 
 ```tsx
-import { FC } from 'react'
+import { FC } from 'react';
 
 interface ButtonProps {
-  variant?: 'primary' | 'secondary'
-  size?: 'sm' | 'md' | 'lg'
-  children: React.ReactNode
-  onClick?: () => void
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
+  onClick?: () => void;
 }
 
 export const Button: FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
   children,
-  onClick
+  onClick,
 }) => {
   return (
-    <button
-      className={`btn btn-${variant} btn-${size}`}
-      onClick={onClick}
-    >
+    <button className={`btn btn-${variant} btn-${size}`} onClick={onClick}>
       {children}
     </button>
-  )
-}
+  );
+};
 ```
 
 ## Boas Práticas
@@ -61,4 +58,4 @@ export const Button: FC<ButtonProps> = ({
 3. **Performance**: Use `memo` quando necessário
 4. **Acessibilidade**: Implemente ARIA attributes
 5. **Responsividade**: Use classes Tailwind responsivas
-6. **Testes**: Cobertura mínima de 80% 
+6. **Testes**: Cobertura mínima de 80%

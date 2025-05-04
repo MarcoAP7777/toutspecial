@@ -10,19 +10,19 @@ module.exports = {
     'image-alt': {
       enabled: true,
     },
-    'label': {
+    label: {
       enabled: true,
     },
     'link-name': {
       enabled: true,
     },
-    'list': {
+    list: {
       enabled: true,
     },
-    'listitem': {
+    listitem: {
       enabled: true,
     },
-    'region': {
+    region: {
       enabled: true,
     },
   },
@@ -37,4 +37,4 @@ module.exports = {
     reportType: 'json',
     outputDir: 'a11y-reports',
   },
-} 
+};
