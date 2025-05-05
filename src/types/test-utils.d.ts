@@ -6,10 +6,12 @@ import type { expect } from '@jest/globals';
 
 declare global {
   namespace jest {
-    interface Matchers<R> extends jest.Matchers<R>, jest.TestingLibraryMatchers<R, any> {
+    interface Matchers<R> {
       toBeInTheDocument(): R;
+      toHaveClass(className: string): R;
       toHaveAttribute(attr: string, value?: string): R;
       toBeNull(): R;
+      toBeTruthy(): R;
     }
   }
 } 
