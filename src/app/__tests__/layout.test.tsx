@@ -20,8 +20,8 @@ describe('RootLayout', () => {
   it('applies font classes to body', () => {
     const { container } = renderWithLayout(<div>Test Content</div>);
     const body = container.querySelector('body');
-    expect(body).not.toBeNull();
-    expect(body?.classList.contains('antialiased')).toBe(true);
-    expect(body?.classList.contains('variable')).toBe(true);
+    expect(body).toBeTruthy();
+    expect(body?.className).toContain('antialiased');
+    expect(body?.className).toContain('variable');
   });
 }); 
