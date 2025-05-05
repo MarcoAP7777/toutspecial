@@ -1,18 +1,17 @@
 import '@testing-library/jest-dom';
-
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import RootLayout from '../layout';
 
 describe('RootLayout', () => {
   it('renders children correctly', () => {
-    render(
+    const { getByText } = render(
       <RootLayout>
         <div>Test Content</div>
       </RootLayout>
     );
 
-    expect(screen.getByText('Test Content')).toBeInTheDocument();
+    expect(getByText('Test Content')).toBeInTheDocument();
   });
 
   it('has correct metadata', () => {
@@ -22,6 +21,8 @@ describe('RootLayout', () => {
       </RootLayout>
     );
 
-    expect(container.querySelector('html')).toHaveAttribute('lang', 'pt-BR');
+    const htmlElement = container.querySelector('html');
+    expect(htmlElement).not.toBeNull();
+    expect(htmlElement).toHaveAttribute('lang', 'pt-BR');
   });
 }); 
