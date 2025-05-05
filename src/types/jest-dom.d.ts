@@ -1,6 +1,17 @@
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
+/// <reference types="@testing-library/jest-dom" />
 
-declare module '@jest/expect' {
-  interface AsymmetricMatchers extends TestingLibraryMatchers<any, any> {}
-  interface Matchers<R = void> extends TestingLibraryMatchers<R, any> {}
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveClass(className: string): R;
+      toHaveAttribute(attr: string, value?: string): R;
+      toBeNull(): R;
+      toBeTruthy(): R;
+      toBe(value: unknown): R;
+      not: {
+        toBeNull(): R;
+      };
+    }
+  }
 } 
