@@ -14,15 +14,14 @@ const renderWithLayout = (children: ReactElement) => {
 describe('RootLayout', () => {
   it('renders children correctly', () => {
     renderWithLayout(<div>Test Content</div>);
-    const element = screen.getByText('Test Content');
-    expect(element).toBeInTheDocument();
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
   it('applies font classes to body', () => {
     const { container } = renderWithLayout(<div>Test Content</div>);
     const body = container.querySelector('body');
-    expect(body).toBeTruthy();
-    expect(body).toHaveClass('antialiased');
-    expect(body).toHaveClass('variable');
+    expect(body).not.toBeNull();
+    expect(body?.classList.contains('antialiased')).toBe(true);
+    expect(body?.classList.contains('variable')).toBe(true);
   });
 }); 
