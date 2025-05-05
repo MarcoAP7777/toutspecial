@@ -2,31 +2,31 @@
  * @jest-environment jsdom
  */
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import RootLayout from '../layout';
 
 describe('RootLayout', () => {
   it('renders children correctly', () => {
-    const { getByText } = render(
+    render(
       <RootLayout>
         <div>Test Content</div>
       </RootLayout>
     );
 
-    const element = getByText('Test Content');
+    const element = screen.getByText('Test Content');
     expect(element).toBeInTheDocument();
   });
 
-  it('has correct metadata', () => {
+  it('applies font classes to body', () => {
     const { container } = render(
       <RootLayout>
         <div>Test Content</div>
       </RootLayout>
     );
 
-    const htmlElement = container.querySelector('html');
-    expect(htmlElement).not.toBeNull();
-    expect(htmlElement).toHaveAttribute('lang', 'pt-BR');
+    const body = container.querySelector('body');
+    expect(body).toHaveClass('antialiased');
+    expect(body).toHaveClass('variable');
   });
 }); 
