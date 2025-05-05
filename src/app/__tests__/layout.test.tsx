@@ -1,3 +1,6 @@
+/**
+ * @jest-environment jsdom
+ */
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 
@@ -11,7 +14,8 @@ describe('RootLayout', () => {
       </RootLayout>
     );
 
-    expect(getByText('Test Content')).toBeInTheDocument();
+    const element = getByText('Test Content');
+    expect(element).toBeInTheDocument();
   });
 
   it('has correct metadata', () => {

@@ -2,15 +2,21 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["jest", "@testing-library/jest-dom"],
+    "types": [
+      "jest",
+      "@testing-library/jest-dom",
+      "node"
+    ],
     "module": "commonjs",
-    "target": "es2019"
+    "target": "es2019",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
-    "src/types/**/*.d.ts"
+    "src/types/**/*.d.ts",
+    "jest.setup.js"
   ]
 } 
