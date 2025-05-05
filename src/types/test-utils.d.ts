@@ -1,5 +1,6 @@
 /// <reference types="@testing-library/jest-dom" />
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { expect } from '@jest/globals';
 
 declare module '@jest/expect' {
