@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20' # Ou a versão que você está usando
+          cache: 'npm' # Adicionando cache de dependências
 
       - name: Install dependencies
         run: npm ci # Usa o package-lock.json para instalação consistente
@@ -24,13 +25,18 @@ jobs:
       - name: Run ESLint
         run: npm run lint # Adicionando o passo de lint
 
-      - name: Run tests
+      - name: Run Jest tests
         run: npm test # Adicionando o passo de teste
 
       - name: Build project
         run: npm run build
 
+      - name: Run Cypress tests
+        run: npm run test:e2e # Adicionando testes E2E
+
       - name: Deploy to Vercel
+        # Roda apenas se os passos anteriores (incluindo testes E2E) foram bem-sucedidos
+        if: success()
         uses: amondnet/vercel-action@v25 # Voltando para a v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Token de acesso Vercel
