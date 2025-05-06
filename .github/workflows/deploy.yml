@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci # Usa o package-lock.json para instalação consistente
 
+      - name: Run ESLint
+        run: npm run lint # Adicionando o passo de lint
+
       - name: Build project
         run: npm run build
 
