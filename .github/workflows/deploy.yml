@@ -25,10 +25,23 @@ jobs:
       - name: Run ESLint
         run: npm run lint # Adicionando o passo de lint
 
-      - name: Run Jest tests
-        run: npm test # Adicionando o passo de teste
+      - name: Run Jest tests and collect coverage
+        run: npm test # Isso agora gera a cobertura
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4 # Usando v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          # directory: ./coverage/ # Opcional, se não for o padrão
+          # flags: unittests # Opcional, para marcar os relatórios
+          # fail_ci_if_error: true # Opcional, para falhar o CI se o upload falhar
+        # Adicione um timeout para evitar que o job fique preso
+        # https://github.com/codecov/codecov-action/issues/693
+        timeout-minutes: 5 
 
       - name: Build project
+        # Roda apenas se os passos anteriores (incluindo testes e upload de cobertura) foram bem-sucedidos
+        if: success()
         run: npm run build
 
       - name: Run Cypress tests
