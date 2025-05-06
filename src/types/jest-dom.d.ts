@@ -1,15 +1,4 @@
-/// <reference types="jest" />
 /// <reference types="@testing-library/jest-dom" />
 
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
-
-declare global {
-  namespace jest {
-    interface Matchers<R = void> extends TestingLibraryMatchers<R, void> {
-      // Adicionando tipos específicos do Jest que estamos usando
-      toBe(expected: unknown): R;
-      toBeNull(): R;
-      toBeTruthy(): R;
-    }
-  }
-} 
+// Não precisamos de mais nada aqui se o tsconfig estiver correto.
+// A linha acima deve ser suficiente para o TypeScript encontrar os tipos. 

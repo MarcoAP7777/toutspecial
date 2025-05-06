@@ -4,11 +4,12 @@ const createJestConfig = nextJest({
   dir: './',
 });
 
+// https://github.com/testing-library/jest-dom/issues/123#issuecomment-538610001
+// Importar diretamente pode ajudar
+require('@testing-library/jest-dom');
+
 const customJestConfig = {
-  setupFilesAfterEnv: [
-    '@testing-library/jest-dom',
-    '<rootDir>/jest.setup.js'
-  ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // jest.setup.js já importa jest-dom
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

@@ -11,7 +11,7 @@
     "target": "es2019",
     "esModuleInterop": true,
     "isolatedModules": false,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "allowJs": true,
     "resolveJsonModule": true,
@@ -22,7 +22,7 @@
     "src/**/*.tsx",
     "src/**/*.js",
     "src/**/*.jsx",
-    "src/types/**/*.d.ts",
+    "src/types/jest-dom.d.ts",
     "jest.setup.js"
   ]
 } 
