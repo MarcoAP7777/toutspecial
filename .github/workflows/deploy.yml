@@ -24,6 +24,9 @@ jobs:
       - name: Run ESLint
         run: npm run lint # Adicionando o passo de lint
 
+      - name: Run tests
+        run: npm test # Adicionando o passo de teste
+
       - name: Build project
         run: npm run build
 
