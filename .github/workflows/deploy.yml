@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,6 +23,14 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25 # Voltando para a v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Token de acesso Vercel
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # ID da sua organização Vercel
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # ID do seu projeto Vercel
+          vercel-args: '--prod' # Argumentos para o comando Vercel (deploy de produção)
 
       # Adicionaremos o deploy do Vercel aqui depois que o build funcionar
       # - name: Deploy to Vercel
