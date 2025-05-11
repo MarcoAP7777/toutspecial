@@ -50,7 +50,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const { password: _, ...userWithoutPassword } = user;
+    const userWithoutPassword = { ...user };
+    delete userWithoutPassword.password;
+    
     const token = await signToken(userWithoutPassword);
     await setAuthCookie(token);
 

@@ -1,33 +1,16 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { 
-  HomeIcon, 
-  ShoppingBagIcon, 
-  TagIcon, 
-  UsersIcon, 
-  CogIcon,
-  ChevronDoubleLeftIcon,
-  ChevronDoubleRightIcon
-} from '@heroicons/react/24/outline'
-import Image from 'next/image'
-
-const menuItems = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
-  { name: 'Produtos', href: '/admin/products', icon: ShoppingBagIcon },
-  { name: 'Categorias', href: '/admin/categories', icon: TagIcon },
-  { name: 'Usuários', href: '/admin/users', icon: UsersIcon },
-  { name: 'Configurações', href: '/admin/settings', icon: CogIcon },
-]
+import { SidebarNav } from '@/components/admin/sidebar-nav'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const pathname = usePathname()
 
   // Não renderizar o layout na página de login
@@ -37,76 +20,66 @@ export default function AdminLayout({
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Menu Lateral */}
-      <aside
-        className={`fixed top-0 left-0 h-full bg-white shadow-lg transition-all duration-300 ${
-          isCollapsed ? 'w-20' : 'w-64'
+      {/* Sidebar para mobile */}
+      <div
+        className={`fixed inset-0 z-40 lg:hidden ${
+          sidebarOpen ? 'block' : 'hidden'
         }`}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="p-4 flex justify-between items-center border-b">
-            {!isCollapsed && (
-              <Image
-                src="/logo.png"
-                alt="Logo Tout Special"
-                width={120}
-                height={40}
-                className="mx-auto"
-              />
-            )}
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
+        <div className="fixed inset-y-0 left-0 flex w-64 flex-col bg-white">
+          <div className="flex h-16 items-center justify-between px-4">
+            <div className="text-xl font-semibold text-gray-800">
+              Tout Spécial
+            </div>
             <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="p-2 rounded-lg hover:bg-gray-100"
+              type="button"
+              className="text-gray-500 hover:text-gray-600"
+              onClick={() => setSidebarOpen(false)}
             >
-              {isCollapsed ? (
-                <ChevronDoubleRightIcon className="h-5 w-5" />
-              ) : (
-                <ChevronDoubleLeftIcon className="h-5 w-5" />
-              )}
+              <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
-
-          {/* Menu Items */}
-          <nav className="flex-1 pt-4">
-            {menuItems.map((item) => {
-              const isActive = pathname.startsWith(item.href)
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 ${
-                    isActive ? 'bg-indigo-50 text-indigo-600' : ''
-                  }`}
-                >
-                  <item.icon className="h-6 w-6" />
-                  {!isCollapsed && (
-                    <span className="ml-3">{item.name}</span>
-                  )}
-                </Link>
-              )
-            })}
-          </nav>
-
-          {/* Footer */}
-          <div className="p-4 border-t">
-            {!isCollapsed && (
-              <p className="text-sm text-gray-500 text-center">
-                Tout Special Admin v1.0
-              </p>
-            )}
+          <div className="flex-1 overflow-y-auto px-4">
+            <SidebarNav />
           </div>
         </div>
-      </aside>
+      </div>
 
-      {/* Conteúdo Principal */}
-      <main
-        className={`transition-all duration-300 ${
-          isCollapsed ? 'ml-20' : 'ml-64'
-        }`}
-      >
-        <div className="p-8">{children}</div>
-      </main>
+      {/* Sidebar para desktop */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+        <div className="flex min-h-0 flex-1 flex-col border-r border-gray-200 bg-white">
+          <div className="flex h-16 items-center px-4">
+            <div className="text-xl font-semibold text-gray-800">
+              Tout Spécial
+            </div>
+          </div>
+          <div className="flex flex-1 flex-col overflow-y-auto px-4">
+            <SidebarNav />
+          </div>
+        </div>
+      </div>
+
+      {/* Conteúdo principal */}
+      <div className="flex flex-1 flex-col lg:pl-64">
+        <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow lg:hidden">
+          <button
+            type="button"
+            className="px-4 text-gray-500 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Bars3Icon className="h-6 w-6" />
+          </button>
+        </div>
+
+        <main className="flex-1">
+          <div className="py-6">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              {children}
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   )
 } 
