@@ -552,3 +552,16 @@ enum sale_type {
 
   @@schema("toutspecial")
 }
+
+model users {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  password   String
+  role       String   @default("MANAGER")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("users")
+  @@schema("toutspecial")
+}

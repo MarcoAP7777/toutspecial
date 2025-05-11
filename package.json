@@ -15,7 +15,8 @@
     "cypress:run": "cypress run",
     "test:e2e": "start-server-and-test dev http://localhost:3000 cypress:run",
     "test:component": "cypress run --component",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "seed": "ts-node --project tsconfig.json -r tsconfig-paths/register scripts/seed.ts"
   },
   "dependencies": {
     "@heroicons/react": "2.2.0",
@@ -67,6 +68,11 @@
     "start-server-and-test": "2.0.11",
     "tailwindcss": "4.1.5",
     "ts-jest": "29.3.2",
+    "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
     "typescript": "5.4.3"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }

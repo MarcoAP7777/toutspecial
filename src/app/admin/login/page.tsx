@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import { Metadata } from 'next';
 import { toast } from 'sonner'
 
 const loginSchema = z.object({
@@ -16,17 +15,12 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>
 
-export const metadata: Metadata = {
-  title: 'Login | Painel Administrativo',
-  description: 'Faça login no painel administrativo do Tout Spécial',
-  robots: 'noindex, nofollow',
-};
-
 export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
-  const from = searchParams.get('from') || '/admin/dashboard'
+  const redirectTo = searchParams ? searchParams.get('from') : null
+  const from = redirectTo || '/admin/dashboard'
 
   const {
     register,
@@ -39,24 +33,40 @@ export default function AdminLogin() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setIsLoading(true)
-      const response = await fetch('/api/auth/login', {
+      console.log('Enviando requisição de login:', { email: data.email })
+      
+      const response = await fetch('/api/admin/auth/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       })
 
-      const result = await response.json()
+      console.log('Status da resposta:', response.status)
+      const contentType = response.headers.get('content-type')
+      console.log('Content-Type da resposta:', contentType)
 
       if (!response.ok) {
-        throw new Error(result.error || 'Erro ao fazer login')
+        const errorText = await response.text()
+        console.error('Erro na resposta:', errorText)
+        try {
+          const errorJson = JSON.parse(errorText)
+          throw new Error(errorJson.error || 'Erro ao fazer login')
+        } catch (e) {
+          throw new Error('Erro ao processar resposta do servidor')
+        }
       }
+
+      const result = await response.json()
+      console.log('Login bem-sucedido:', result)
 
       toast.success('Login realizado com sucesso!')
       router.push(from)
     } catch (error) {
-      console.error(error)
+      console.error('Erro durante o login:', error)
       toast.error(error instanceof Error ? error.message : 'Erro ao fazer login')
     } finally {
       setIsLoading(false)
@@ -68,7 +78,7 @@ export default function AdminLogin() {
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
         <div className="text-center">
           <Image
-            src="/logo.png"
+            src="/vercel.svg"
             alt="Logo Tout Special"
             width={150}
             height={150}

@@ -1,81 +1,50 @@
 'use client'
 
-import { Metadata } from 'next';
-import { 
-  ShoppingBagIcon, 
+import {
+  ShoppingBagIcon,
+  UsersIcon,
   CurrencyDollarIcon,
-  UserGroupIcon,
-  ShoppingCartIcon 
+  ShoppingCartIcon
 } from '@heroicons/react/24/outline'
+import { ComponentType } from 'react'
 
-export const metadata: Metadata = {
-  title: 'Dashboard | Painel Administrativo',
-  description: 'Dashboard do painel administrativo do Tout Spécial',
-  robots: 'noindex, nofollow',
-};
+interface DashboardCardProps {
+  title: string
+  value: string
+  icon: ComponentType<{ className?: string }>
+  change: string
+}
 
-const stats = [
-  {
-    name: 'Total de Produtos',
-    value: '248',
-    icon: ShoppingBagIcon,
-    change: '+12%',
-    changeType: 'positive'
-  },
-  {
-    name: 'Vendas do Mês',
-    value: 'R$ 24.500',
-    icon: CurrencyDollarIcon,
-    change: '+25%',
-    changeType: 'positive'
-  },
-  {
-    name: 'Novos Clientes',
-    value: '54',
-    icon: UserGroupIcon,
-    change: '+18%',
-    changeType: 'positive'
-  },
-  {
-    name: 'Pedidos Pendentes',
-    value: '12',
-    icon: ShoppingCartIcon,
-    change: '-10%',
-    changeType: 'negative'
-  },
-]
-
-export default function Dashboard() {
+export default function DashboardPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
       
-      <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <div
-            key={stat.name}
-            className="relative overflow-hidden rounded-lg bg-white px-4 pt-5 pb-12 shadow sm:px-6 sm:pt-6"
-          >
-            <dt>
-              <div className="absolute rounded-md bg-indigo-500 p-3">
-                <stat.icon className="h-6 w-6 text-white" aria-hidden="true" />
-              </div>
-              <p className="ml-16 truncate text-sm font-medium text-gray-500">
-                {stat.name}
-              </p>
-            </dt>
-            <dd className="ml-16 flex items-baseline pb-6 sm:pb-7">
-              <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
-              <p
-                className={`ml-2 flex items-baseline text-sm font-semibold ${
-                  stat.changeType === 'positive' ? 'text-green-600' : 'text-red-600'
-                }`}
-              >
-                {stat.change}
-              </p>
-            </dd>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <DashboardCard
+          title="Total de Vendas"
+          value="R$ 25.430,00"
+          icon={CurrencyDollarIcon}
+          change="+12%"
+        />
+        <DashboardCard
+          title="Pedidos"
+          value="156"
+          icon={ShoppingCartIcon}
+          change="+8%"
+        />
+        <DashboardCard
+          title="Produtos"
+          value="432"
+          icon={ShoppingBagIcon}
+          change="+5%"
+        />
+        <DashboardCard
+          title="Clientes"
+          value="1.245"
+          icon={UsersIcon}
+          change="+15%"
+        />
       </div>
 
       {/* Placeholder para gráficos e outras informações */}
@@ -93,6 +62,21 @@ export default function Dashboard() {
             <p className="text-gray-500">Lista de Produtos</p>
           </div>
         </div>
+      </div>
+    </div>
+  )
+}
+
+function DashboardCard({ title, value, icon: Icon, change }: DashboardCardProps) {
+  return (
+    <div className="bg-white rounded-lg shadow p-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-gray-500 text-sm">{title}</p>
+          <h2 className="text-2xl font-bold mt-2">{value}</h2>
+          <p className="text-green-500 text-sm mt-2">{change}</p>
+        </div>
+        <Icon className="h-12 w-12 text-indigo-500" />
       </div>
     </div>
   )

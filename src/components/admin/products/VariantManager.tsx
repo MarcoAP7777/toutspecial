@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { ProductVariantFormData } from '@/lib/validations/product'
 import { Button } from '@/components/ui/button'
