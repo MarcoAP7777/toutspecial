@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
-import { signJWT as signToken, setAuthCookie } from '@/lib/auth';
-import { comparePasswords } from '@/lib/crypto';
+import { signJWT as signToken, setAuthCookie, MOCK_USERS } from '@/lib/auth';
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -17,26 +15,17 @@ export async function POST(request: Request) {
     const { email, password } = loginSchema.parse(body);
     console.log('Dados validados pelo Zod');
 
-    const user = await prisma.users.findUnique({
-      where: {
-        email,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true,
-        role: true,
-      },
-    });
-    console.log('Busca no banco:', user ? 'Usuário encontrado' : 'Usuário não encontrado');
+    // Usando mock temporariamente
+    const user = MOCK_USERS.find(u => u.email === email);
+    console.log('Busca no mock:', user ? 'Usuário encontrado' : 'Usuário não encontrado');
 
     if (!user) {
       console.log('Usuário não encontrado');
       return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
     }
 
-    const isValidPassword = await comparePasswords(password, user.password);
+    // Para desenvolvimento, comparação direta
+    const isValidPassword = user.password === password;
     console.log('Validação de senha:', isValidPassword ? 'Senha válida' : 'Senha inválida');
 
     if (!isValidPassword) {
