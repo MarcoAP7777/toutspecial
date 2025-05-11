@@ -11,8 +11,10 @@ export default function SentryExamplePage() {
     try {
       throw new Error('Erro de teste do Sentry');
     } catch (error) {
-      Sentry.captureException(error);
-      console.error('Erro capturado pelo Sentry:', error);
+      if (error instanceof Error) {
+        Sentry.captureException(error);
+        console.error('Erro capturado pelo Sentry:', error.message);
+      }
     }
   };
 

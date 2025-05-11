@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Toaster } from '../components/ui/toaster';
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${inter.variable} antialiased`}>
         <Sentry.ErrorBoundary fallback={<div>Ocorreu um erro inesperado.</div>}>
-          {children}
+          <div className={`${inter.variable} min-h-screen bg-gray-50`}>
+            {children}
+          </div>
         </Sentry.ErrorBoundary>
         <Toaster />
       </body>
