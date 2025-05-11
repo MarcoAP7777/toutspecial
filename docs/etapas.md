@@ -6,7 +6,7 @@
 - Stack: React + Tailwind CSS + ShadCN UI + Prisma + PostgreSQL/MySQL
 - Gateway de pagamento: **Vindi**
 - Domínio temporário exclusivo durante o desenvolvimento (sem subdomínio, sem indexação)
-- Documentação centralizada no `README.md`
+- Documentação centralizada na pasta `docs/`
 - **Painel Administrativo é prioridade absoluta**
 
 ---

@@ -1,0 +1,6 @@
+# This is an empty migration that serves as a baseline
+
+[migration]
+name = "init"
+provider = "postgresql"
+primary = true 

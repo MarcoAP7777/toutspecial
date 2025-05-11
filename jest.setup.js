@@ -1,6 +1,7 @@
+// Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
-// Mock next/router
+// Mock do next/router
 jest.mock('next/router', () => ({
   useRouter() {
     return {
@@ -12,6 +13,32 @@ jest.mock('next/router', () => ({
       replace: jest.fn(),
     };
   },
+}));
+
+// Mock do next/navigation
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      replace: jest.fn(),
+      prefetch: jest.fn(),
+      back: jest.fn(),
+    };
+  },
+  usePathname() {
+    return '';
+  },
+  useSearchParams() {
+    return new URLSearchParams();
+  },
+}));
+
+// Mock do Sentry
+jest.mock('@sentry/nextjs', () => ({
+  captureException: jest.fn(),
+  captureMessage: jest.fn(),
+  showReportDialog: jest.fn(),
+  ErrorBoundary: ({ children }) => children,
 }));
 
 // Mock next/image

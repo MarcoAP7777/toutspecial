@@ -116,7 +116,7 @@ Testes com Jest (unidade) e Playwright (end-to-end)
 
 Linter, Prettier e TypeScript com strict: true
 
-Documentação técnica centralizada no README.md
+Documentação técnica centralizada na pasta `docs/`
 
 Scripts de importação integrados ao pipeline de build
 

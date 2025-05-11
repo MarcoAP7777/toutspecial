@@ -1,6 +1,8 @@
+import * as Sentry from '@sentry/nextjs';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,7 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.variable} antialiased`}>{children}</body>
+      <body className={`${inter.variable} antialiased`}>
+        <Sentry.ErrorBoundary fallback={<div>Ocorreu um erro inesperado.</div>}>
+          {children}
+        </Sentry.ErrorBoundary>
+        <Toaster richColors position="top-right" />
+      </body>
     </html>
   );
 }

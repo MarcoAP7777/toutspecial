@@ -13,13 +13,13 @@ datasource db {
 model address {
   address_id   String     @id @db.Uuid
   customer_id  String?    @db.Uuid
-  zipcode      String     @db.VarChar(8)  // CEP brasileiro
+  zipcode      String     @db.VarChar(8)
   street       String     @db.VarChar(200)
   number       String     @db.VarChar(10)
   complement   String?    @db.VarChar(100)
   neighborhood String     @db.VarChar(100)
   city         String     @db.VarChar(100)
-  state        String     @db.VarChar(2)  // UF brasileira
+  state        String     @db.VarChar(2)
   customers    customers? @relation(fields: [customer_id], references: [customer_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([customer_id], map: "idx_address_customer_id")
@@ -28,13 +28,13 @@ model address {
 
 /// Modelo para marcas de produtos
 model brands {
-  id              String  @id @db.Uuid
-  name            String? @db.VarChar(100)
-  slug            String? @unique @db.VarChar(100)
-  description     String? @db.Text
-  seo_title       String? @db.VarChar(60)
-  seo_description String? @db.VarChar(160)
-  logo_url        String? @db.VarChar(255)
+  id              String     @id @db.Uuid
+  name            String?    @db.VarChar(100)
+  slug            String?    @unique @db.VarChar(100)
+  description     String?
+  seo_title       String?    @db.VarChar(60)
+  seo_description String?    @db.VarChar(160)
+  logo_url        String?    @db.VarChar(255)
   products        products[]
 
   @@schema("toutspecial")
@@ -46,7 +46,7 @@ model categories {
   name               String?              @db.VarChar(100)
   slug               String?              @unique @db.VarChar(100)
   parent_id          String?              @db.Uuid
-  description        String?              @db.Text
+  description        String?
   thumbnail          String?              @db.VarChar(255)
   menu_order         Int?
   seo_title          String?              @db.VarChar(60)
@@ -122,10 +122,10 @@ model customers {
   gender            gender_enum?
   created_at        DateTime?         @default(now()) @db.Timestamp(6)
   updated_at        DateTime?         @default(now()) @db.Timestamp(6)
-  created_by        String?           @db.Uuid
-  updated_by        String?           @db.Uuid
   lgpd_consent      Boolean?          @default(false)
   lgpd_consent_date DateTime?         @db.Timestamp(6)
+  created_by        String?           @db.Uuid
+  updated_by        String?           @db.Uuid
   address           address[]
   orders            orders[]
   product_reviews   product_reviews[]
@@ -214,8 +214,8 @@ model orders {
   shipping_data       Json?
   shipping_carrier_id String?            @db.Uuid
   created_at          DateTime?          @default(now()) @db.Timestamp(6)
-  updated_at          DateTime?          @default(now()) @db.Timestamp(6)
   created_by          String?            @db.Uuid
+  updated_at          DateTime?          @default(now()) @db.Timestamp(6)
   updated_by          String?            @db.Uuid
   order_items         order_items[]
   order_tracking      order_tracking[]
@@ -321,75 +321,65 @@ model product_variants {
 
 /// Modelo para produtos
 model products {
-  product_id        String               @id @db.Uuid
-  name              String               @db.VarChar(255)
-  slug              String?              @unique @db.VarChar(255)
-  description       String?              @db.Text
-  short_description String?              @db.VarChar(160)
-  price             Decimal?             @db.Decimal(10, 2)
-  buy_price         Decimal?             @db.Decimal(10, 2)
-  promotional_price Decimal?             @db.Decimal(10, 2)
-  sku               String?              @db.VarChar(50)
-  ean               String?              @unique @db.VarChar(13)
-  weight            Decimal?             @db.Decimal(10, 3)
-  height            Decimal?             @db.Decimal(10, 2)
-  width             Decimal?             @db.Decimal(10, 2)
-  length            Decimal?             @db.Decimal(10, 2)
-  brand_id          String?              @db.Uuid
-  is_active         Boolean?             @default(true)
-  product_type      product_type         @default(physical)
-  stock_status      stock_status         @default(in_stock)
-  sale_type         sale_type           @default(unitaria)
-  created_at        DateTime?            @default(now()) @db.Timestamp(6)
-  updated_at        DateTime?            @default(now()) @db.Timestamp(6)
-  created_by        String?              @db.Uuid
-  updated_by        String?              @db.Uuid
-  seo_title         String?              @db.VarChar(60)
-  seo_description   String?              @db.VarChar(160)
+  product_id         String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String              @db.VarChar(255)
+  slug              String              @unique @db.VarChar(255)
+  description       String?
+  price            Decimal             @db.Decimal(10, 2)
+  compare_at_price  Decimal?            @db.Decimal(10, 2)
+  sku              String              @unique @db.VarChar(100)
+  barcode          String?             @db.VarChar(100)
+  weight           Decimal             @db.Decimal(10, 3)
+  stock            Int                 @default(0)
+  is_active        Boolean             @default(true)
+  brand_id         String?             @db.Uuid
+  created_at       DateTime            @default(now()) @db.Timestamp(6)
+  updated_at       DateTime            @default(now()) @db.Timestamp(6)
+  seo_title        String?             @db.VarChar(60)
+  seo_description  String?             @db.VarChar(160)
+  seo_keywords     String[]            @default([])
+  brands           brands?             @relation(fields: [brand_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
   product_images    product_images[]
-  product_variants  product_variants[]
   product_categories product_categories[]
-  product_tags      product_tags[]
   product_reviews   product_reviews[]
-  order_items       order_items[]
-  product_cache     product_cache?
-  brands            brands?              @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  coupon_products   coupon_products[]
-  showcase_products showcase_products[]
+  product_variants  product_variants[]
+  order_items      order_items[]
+  coupon_products  coupon_products[]
+  product_cache    product_cache[]
   product_attributes product_attributes[]
-  main_bundles      product_bundles[]    @relation("main_product")
-  bundled_products  product_bundles[]    @relation("bundled_product")
   product_downloads product_downloads[]
+  product_tags     product_tags[]
+  bundled_products product_bundles[]   @relation("bundled_product")
+  main_bundles     product_bundles[]   @relation("main_product")
+  showcase_products showcase_products[]
 
   @@index([brand_id], map: "idx_products_brand_id")
   @@index([is_active], map: "idx_products_is_active")
+  @@index([created_at], map: "idx_products_created_at")
+  @@index([updated_at], map: "idx_products_updated_at")
   @@index([sku], map: "idx_products_sku")
-  @@index([created_at, is_active], map: "idx_products_created_active")
-  @@index([price, is_active], map: "idx_products_price_active")
-  @@index([product_type, is_active], map: "idx_products_type_active")
-  @@index([stock_status, is_active], map: "idx_products_stock_active")
   @@schema("toutspecial")
 }
 
 model product_attributes {
-  id          String    @id @db.Uuid
-  product_id  String    @db.Uuid
-  name        String    @db.VarChar(100)
-  value       String    @db.Text
-  products    products  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  id         String   @id @db.Uuid
+  product_id String   @db.Uuid
+  name       String   @db.VarChar(100)
+  value      String
+  products   products @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_attributes_product_id")
   @@schema("toutspecial")
 }
 
 model product_bundles {
-  id                String    @id @db.Uuid
-  product_id        String    @db.Uuid
+  id                 String   @id @db.Uuid
+  product_id         String   @db.Uuid
   bundled_product_id String   @db.Uuid
-  quantity          Int
-  discount          Decimal?  @db.Decimal(5, 2)
-  main_product      products  @relation("main_product", fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
-  bundled_product   products  @relation("bundled_product", fields: [bundled_product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  quantity           Int
+  discount           Decimal? @db.Decimal(5, 2)
+  bundled_product    products @relation("bundled_product", fields: [bundled_product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  main_product       products @relation("main_product", fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_bundles_product_id")
   @@index([bundled_product_id], map: "idx_product_bundles_bundled_id")
@@ -397,13 +387,13 @@ model product_bundles {
 }
 
 model product_downloads {
-  id          String    @id @db.Uuid
-  product_id  String    @db.Uuid
-  name        String    @db.VarChar(255)
-  url         String    @db.VarChar(255)
-  file_size   Int?
-  file_type   String?   @db.VarChar(50)
-  products    products  @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
+  id         String   @id @db.Uuid
+  product_id String   @db.Uuid
+  name       String   @db.VarChar(255)
+  url        String   @db.VarChar(255)
+  file_size  Int?
+  file_type  String?  @db.VarChar(50)
+  products   products @relation(fields: [product_id], references: [product_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([product_id], map: "idx_product_downloads_product_id")
   @@schema("toutspecial")

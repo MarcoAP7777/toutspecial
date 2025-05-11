@@ -136,7 +136,7 @@ chore: tarefas auxiliares
 ## 🔄 Versão e Documentação
 
 - Toda nova funcionalidade ou módulo deve vir acompanhada de documentação (README ou `docs/*.md`)
-- As versões do projeto devem ser documentadas no `README.md`
+- As versões do projeto devem ser documentadas na pasta `docs/`
 - Alterações relevantes de arquitetura ou regras devem ser atualizadas em `infra.md` ou `etapas.md`
 
 ---
@@ -153,6 +153,6 @@ chore: tarefas auxiliares
 
 ## 📚 Documentação Relacionada
 
-- [`README.md`](../README.md) — visão geral do projeto
+- [Documentação Principal](../docs/readme.md) — visão geral do projeto
 - [`infra.md`](./infra.md) — infraestrutura técnica e arquitetura
 - [`etapas.md`](./etapas.md) — planejamento modular do desenvolvimento

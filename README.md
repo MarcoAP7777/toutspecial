@@ -6,6 +6,24 @@ E-commerce de moda desenvolvido com Next.js, focado em performance, SEO avançad
 
 O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para garantir uma experiência de compra excepcional. O projeto é construído com Next.js, TypeScript e uma arquitetura robusta que prioriza performance, SEO e segurança.
 
+## 📚 Documentação Completa
+
+A documentação detalhada do projeto está disponível na pasta `docs/`:
+
+| Documento | Descrição |
+|-----------|-----------|
+| [Etapas do Projeto](docs/etapas.md) | Etapas detalhadas do projeto |
+| [Frontend](docs/frontend.md) | UX e arquitetura da loja |
+| [Infraestrutura](docs/infra.md) | Infraestrutura, DNS, cache, backups |
+| [SEO](docs/seo.md) | Técnicas de SEO OnPage e técnico |
+| [Modelagem](docs/modelagem.md) | Modelagem de dados com índices e enums |
+| [Paginação](docs/paginacao-estrategia.md) | Estratégia de paginação para SEO e UX |
+| [Schema Markup](docs/schema-strategy.md) | Estratégia de uso de schema markup |
+| [Requisitos](docs/requisitos.md) | Regras de negócio e requisitos não-funcionais |
+| [Admin](docs/admin.md) | Documentação do painel administrativo |
+| [Atributos de Moda](docs/fashion-attributes-guide.md) | Guia de atributos técnicos padronizados |
+| [Estilo de Código](docs/code-style.md) | Padrões e convenções de código |
+
 ## 🏗️ Arquitetura
 
 ### Frontend
@@ -34,7 +52,7 @@ O Tout Spécial é um e-commerce de moda que utiliza tecnologias modernas para g
 
 ### Pré-requisitos
 
-- Node.js 18.x
+- Node.js 20.x
 - npm 9.x
 - PostgreSQL 13.x
 - Redis

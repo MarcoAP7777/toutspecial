@@ -11,11 +11,11 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    serverActions: true,
   },
   compiler: {
     styledComponents: true,
   },
+  productionBrowserSourceMaps: true,
   async headers() {
     return [
       {
@@ -67,4 +67,21 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const { withSentryConfig } = require("@sentry/nextjs");
+
+module.exports = withSentryConfig(
+  nextConfig,
+  {
+    org: "tout-special",
+    project: "javascript-nextjs",
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    tunnelRoute: "/monitoring",
+    disableLogger: true,
+    automaticVercelMonitors: true,
+    sourcemaps: {
+      include: ['.'],
+      ignore: ['node_modules'],
+    },
+  }
+);

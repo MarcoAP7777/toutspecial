@@ -1,9 +1,9 @@
 [auth]
-token=your-sentry-auth-token
+token=${SENTRY_AUTH_TOKEN}
 
 [defaults]
-org=your-org
-project=your-project
+org=tout-special
+project=javascript-nextjs
 
 [build]
 upload_source_maps=true
