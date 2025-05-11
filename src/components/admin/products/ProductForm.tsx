@@ -21,26 +21,36 @@ const productSchema = z.object({
   seo_description: z.string().optional(),
   categories: z.array(z.string()).min(1, 'Selecione pelo menos uma categoria'),
   occasions: z.array(z.string()).optional(),
-  images: z.array(z.object({
-    url: z.string(),
-    alt: z.string(),
-    display_order: z.number(),
-  })).min(1, 'Adicione pelo menos uma imagem'),
-  variants: z.array(z.object({
-    sku: z.string(),
-    ean: z.string().optional(),
-    color_id: z.string(),
-    size_id: z.string(),
-    price: z.number().min(0),
-    sale_price: z.number().optional(),
-    stock: z.number().min(0),
-    weight: z.number().min(0),
-    dimensions: z.object({
-      length: z.number(),
-      width: z.number(),
-      height: z.number(),
-    }).optional(),
-  })).min(1, 'Adicione pelo menos uma variação'),
+  images: z
+    .array(
+      z.object({
+        url: z.string(),
+        alt: z.string(),
+        display_order: z.number(),
+      })
+    )
+    .min(1, 'Adicione pelo menos uma imagem'),
+  variants: z
+    .array(
+      z.object({
+        sku: z.string(),
+        ean: z.string().optional(),
+        color_id: z.string(),
+        size_id: z.string(),
+        price: z.number().min(0),
+        sale_price: z.number().optional(),
+        stock: z.number().min(0),
+        weight: z.number().min(0),
+        dimensions: z
+          .object({
+            length: z.number(),
+            width: z.number(),
+            height: z.number(),
+          })
+          .optional(),
+      })
+    )
+    .min(1, 'Adicione pelo menos uma variação'),
   composition: z.string().optional(),
   care_instructions: z.string().optional(),
   is_active: z.boolean().default(true),

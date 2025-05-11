@@ -103,9 +103,7 @@ export default function ProductsPage() {
                 <td className="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                   <span
                     className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      product.is_active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                      product.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}
                   >
                     {product.is_active ? 'Ativo' : 'Inativo'}
