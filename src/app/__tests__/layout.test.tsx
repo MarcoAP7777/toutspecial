@@ -3,7 +3,6 @@
  */
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import type { ReactElement } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import RootLayout from '../layout';

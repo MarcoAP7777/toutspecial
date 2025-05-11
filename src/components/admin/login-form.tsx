@@ -1,8 +1,10 @@
-import { useState } from 'react';
+'use client';
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -12,7 +14,6 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const [error, setError] = useState('');
   const router = useRouter();
   const {
     register,
@@ -35,8 +36,8 @@ export function LoginForm() {
       }
 
       router.push('/admin/dashboard');
-    } catch (err) {
-      setError('E-mail ou senha incorretos');
+    } catch (_error) {
+      toast.error('Erro ao fazer login. Verifique suas credenciais.');
     }
   }
 
@@ -73,8 +74,6 @@ export function LoginForm() {
           )}
         </div>
       </div>
-
-      {error && <div className="text-sm text-red-600 text-center">{error}</div>}
 
       <div>
         <button

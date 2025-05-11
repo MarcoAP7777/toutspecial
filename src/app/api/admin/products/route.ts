@@ -4,14 +4,37 @@ import { productSchema } from '@/lib/validations/product';
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany({
-      orderBy: { updatedAt: 'desc' },
+    const products = await prisma.products.findMany({
+      select: {
+        product_id: true,
+        name: true,
+        price: true,
+        stock: true,
+        is_active: true,
+        brand: {
+          select: {
+            name: true,
+          },
+        },
+        product_variants: {
+          select: {
+            sku: true,
+            stock: true,
+          },
+        },
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
     });
 
     return NextResponse.json(products);
   } catch (error) {
-    console.error('Erro ao listar produtos:', error);
-    return NextResponse.json({ error: 'Erro ao listar produtos' }, { status: 500 });
+    console.error('Erro ao buscar produtos:', error);
+    return NextResponse.json(
+      { error: 'Erro ao buscar produtos' },
+      { status: 500 }
+    );
   }
 }
 

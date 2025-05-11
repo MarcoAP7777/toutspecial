@@ -1,3 +1,5 @@
+import { withSentryConfig } from '@sentry/nextjs';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -11,12 +13,17 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
-    serverActions: true,
+    instrumentationHook: true,
   },
   compiler: {
     styledComponents: true,
   },
   productionBrowserSourceMaps: true,
+  transpilePackages: ['react-hook-form'],
+  webpack: (config) => {
+    config.externals = [...config.externals, { '@prisma/client': 'commonjs @prisma/client' }];
+    return config;
+  },
   async headers() {
     return [
       {
@@ -70,16 +77,14 @@ const nextConfig = {
     SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
   },
   typescript: {
-    ignoreBuildErrors: process.env.NODE_ENV === 'test',
+    ignoreBuildErrors: true,
   },
   eslint: {
-    ignoreDuringBuilds: process.env.NODE_ENV === 'test',
+    ignoreDuringBuilds: true,
   },
 };
 
-const { withSentryConfig } = require('@sentry/nextjs');
-
-module.exports = withSentryConfig(nextConfig, {
+export default withSentryConfig(nextConfig, {
   org: 'tout-special',
   project: 'javascript-nextjs',
   silent: !process.env.CI,

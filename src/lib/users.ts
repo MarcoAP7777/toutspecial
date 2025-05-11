@@ -19,7 +19,7 @@ export async function createUser(data: {
     },
   });
 
-  const { password: _, ...userData } = user;
+  const { password, ...userData } = user;
   return userData;
 }
 
@@ -36,7 +36,7 @@ export async function validateUser(email: string, password: string): Promise<Use
   const isValid = await compare(password, user.password);
   if (!isValid) return null;
 
-  const { password: _, ...userData } = user;
+  const { password: userPassword, ...userData } = user;
   return userData;
 }
 
@@ -54,4 +54,11 @@ export async function seedAdminUser() {
     });
     console.log('Usuário admin criado com sucesso');
   }
+}
+
+export async function updateUser(data: UpdateUserInput) {
+  return await prisma.users.update({
+    where: { id: data.id },
+    data,
+  });
 }

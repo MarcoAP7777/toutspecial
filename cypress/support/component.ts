@@ -4,10 +4,12 @@ import './commands';
 // Import global styles
 import '../../src/app/globals.css';
 
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      // Adicione comandos customizados aqui se necessário
-    }
+import { mount } from '@cypress/react';
+
+declare module 'cypress' {
+  interface Chainable {
+    mount: typeof mount;
   }
 }
+
+Cypress.Commands.add('mount', mount);

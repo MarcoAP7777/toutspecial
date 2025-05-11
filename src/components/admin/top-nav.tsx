@@ -1,11 +1,8 @@
-import { User } from '@/lib/auth';
+'use client';
+
 import { useRouter } from 'next/navigation';
 
-interface TopNavProps {
-  user: User;
-}
-
-export function TopNav({ user }: TopNavProps) {
+export function TopNav() {
   const router = useRouter();
 
   async function handleLogout() {

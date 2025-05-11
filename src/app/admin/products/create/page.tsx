@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { ProductFormData } from '@/lib/validations/product';
 import { randomUUID } from 'crypto';
 import { Decimal } from '@prisma/client/runtime/library';
+import { Brand } from '@prisma/client';
 
 export const metadata = {
   title: 'Criar Produto - Tout Spécial Admin',
@@ -117,10 +118,10 @@ export default async function CreateProductPage() {
           name: 'asc',
         },
       })
-      .then(brands =>
+      .then((brands: Brand[]) =>
         brands.map(brand => ({
           id: brand.id,
-          name: brand.name as string, // Garantir que name não é null devido ao where
+          name: brand.name as string,
         }))
       ),
     prisma.categories

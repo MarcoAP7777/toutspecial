@@ -1,15 +1,60 @@
+'use client';
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProductFormData, productSchema } from '@/lib/validations/product';
+import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ImageUploader } from './ImageUploader';
 import { VariantManager } from './VariantManager';
 import { Editor } from '@/components/ui/editor'; // Componente de editor WYSIWYG a ser implementado
 
+const productSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório'),
+  slug: z.string().min(1, 'Slug é obrigatório'),
+  description: z.string().min(1, 'Descrição é obrigatória'),
+  short_description: z.string().optional(),
+  brand_id: z.string().min(1, 'Marca é obrigatória'),
+  garment_type_id: z.string().optional(),
+  h1: z.string().optional(),
+  seo_title: z.string().optional(),
+  seo_description: z.string().optional(),
+  categories: z.array(z.string()).min(1, 'Selecione pelo menos uma categoria'),
+  occasions: z.array(z.string()).optional(),
+  images: z.array(z.object({
+    url: z.string(),
+    alt: z.string(),
+    display_order: z.number(),
+  })).min(1, 'Adicione pelo menos uma imagem'),
+  variants: z.array(z.object({
+    sku: z.string(),
+    ean: z.string().optional(),
+    color_id: z.string(),
+    size_id: z.string(),
+    price: z.number().min(0),
+    sale_price: z.number().optional(),
+    stock: z.number().min(0),
+    weight: z.number().min(0),
+    dimensions: z.object({
+      length: z.number(),
+      width: z.number(),
+      height: z.number(),
+    }).optional(),
+  })).min(1, 'Adicione pelo menos uma variação'),
+  composition: z.string().optional(),
+  care_instructions: z.string().optional(),
+  is_active: z.boolean().default(true),
+});
+
+type ProductFormData = z.infer<typeof productSchema>;
+
 interface ProductFormProps {
   initialData?: Partial<ProductFormData>;
-  onSubmit: (data: ProductFormData) => Promise<{ success: boolean; product?: any; error?: string }>;
+  onSubmit: (data: ProductFormData) => Promise<{
+    success: boolean;
+    product?: ProductFormData;
+    error?: string;
+  }>;
   brands: Array<{ id: string; name: string }>;
   categories: Array<{ category_id: string; name: string }>;
   colors: Array<{ id: string; name: string; hex_code: string }>;
