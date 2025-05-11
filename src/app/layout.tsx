@@ -14,18 +14,12 @@ export const metadata: Metadata = {
   description: 'E-commerce de moda em desenvolvimento',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} antialiased`}>
         <Sentry.ErrorBoundary fallback={<div>Ocorreu um erro inesperado.</div>}>
-          <div className={`${inter.variable} min-h-screen bg-gray-50`}>
-            {children}
-          </div>
+          <div className={`${inter.variable} min-h-screen bg-gray-50`}>{children}</div>
         </Sentry.ErrorBoundary>
         <Toaster />
       </body>

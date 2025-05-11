@@ -17,4 +17,4 @@ describe('Button Component', () => {
     cy.mount(<Button disabled>Disabled Button</Button>);
     cy.get('button').should('be.disabled');
   });
-}); 
+});

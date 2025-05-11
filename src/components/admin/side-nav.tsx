@@ -26,14 +26,10 @@ export function SideNav({ user }: SideNavProps) {
         <div className="flex flex-col h-0 flex-1 bg-gray-800">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div className="flex items-center flex-shrink-0 px-4">
-              <img
-                className="h-8 w-auto"
-                src="/logo-white.png"
-                alt="Tout Spécial"
-              />
+              <img className="h-8 w-auto" src="/logo-white.png" alt="Tout Spécial" />
             </div>
             <nav className="mt-5 flex-1 px-2 space-y-1">
-              {navigation.map((item) => {
+              {navigation.map(item => {
                 const isActive = pathname === item.href;
                 return (
                   <Link
@@ -65,4 +61,4 @@ export function SideNav({ user }: SideNavProps) {
       </div>
     </div>
   );
-} 
+}

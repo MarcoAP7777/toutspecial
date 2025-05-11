@@ -21,9 +21,6 @@ export async function PUT(request: Request, { params }: RouteParams) {
     return NextResponse.json(product);
   } catch (error) {
     console.error('Erro ao atualizar produto:', error);
-    return NextResponse.json(
-      { error: 'Erro ao atualizar produto' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao atualizar produto' }, { status: 500 });
   }
-} 
+}

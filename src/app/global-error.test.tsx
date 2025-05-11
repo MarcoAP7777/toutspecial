@@ -13,6 +13,10 @@ describe('GlobalError', () => {
     digest: 'test-digest',
   } as Error & { digest?: string };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders error message', () => {
     render(<GlobalError error={mockError} />);
     expect(screen.getByText('Algo deu errado!')).toBeInTheDocument();
@@ -20,11 +24,11 @@ describe('GlobalError', () => {
 
   it('shows report dialog when button is clicked', () => {
     render(<GlobalError error={mockError} />);
-    const reportButton = screen.getByText('Reportar erro');
-    
+    const reportButton = screen.getByText('Reportar Feedback');
+
     fireEvent.click(reportButton);
     expect(Sentry.showReportDialog).toHaveBeenCalledWith({
-      eventId: 'test-digest',
+      eventId: mockError.digest,
     });
   });
-}); 
+});

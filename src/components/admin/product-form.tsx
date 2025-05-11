@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -32,10 +32,10 @@ export function ProductForm({ initialData }: ProductFormProps) {
   async function onSubmit(data: ProductFormData) {
     try {
       setIsSubmitting(true);
-      const endpoint = initialData 
+      const endpoint = initialData
         ? `/api/admin/products/${initialData.id}`
         : '/api/admin/products';
-      
+
       const response = await fetch(endpoint, {
         method: initialData ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,9 +65,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {...register('name')}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -77,9 +75,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {...register('sku')}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {errors.sku && (
-            <p className="mt-1 text-sm text-red-600">{errors.sku.message}</p>
-          )}
+          {errors.sku && <p className="mt-1 text-sm text-red-600">{errors.sku.message}</p>}
         </div>
 
         <div>
@@ -90,15 +86,11 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {...register('price', { valueAsNumber: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {errors.price && (
-            <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
-          )}
+          {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Preço Comparativo
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Preço Comparativo</label>
           <input
             type="number"
             step="0.01"
@@ -106,25 +98,19 @@ export function ProductForm({ initialData }: ProductFormProps) {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
           {errors.compareAtPrice && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.compareAtPrice.message}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.compareAtPrice.message}</p>
           )}
         </div>
 
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Descrição
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Descrição</label>
           <textarea
             rows={4}
             {...register('description')}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
           {errors.description && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.description.message}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>
           )}
         </div>
 
@@ -136,9 +122,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {...register('weight', { valueAsNumber: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {errors.weight && (
-            <p className="mt-1 text-sm text-red-600">{errors.weight.message}</p>
-          )}
+          {errors.weight && <p className="mt-1 text-sm text-red-600">{errors.weight.message}</p>}
         </div>
 
         <div>
@@ -148,9 +132,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             {...register('stock', { valueAsNumber: true })}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          {errors.stock && (
-            <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>
-          )}
+          {errors.stock && <p className="mt-1 text-sm text-red-600">{errors.stock.message}</p>}
         </div>
 
         <div className="col-span-2">
@@ -164,9 +146,7 @@ export function ProductForm({ initialData }: ProductFormProps) {
             </div>
             <div className="ml-3 text-sm">
               <label className="font-medium text-gray-700">Produto Ativo</label>
-              <p className="text-gray-500">
-                Produtos inativos não aparecem na loja
-              </p>
+              <p className="text-gray-500">Produtos inativos não aparecem na loja</p>
             </div>
           </div>
         </div>
@@ -190,4 +170,4 @@ export function ProductForm({ initialData }: ProductFormProps) {
       </div>
     </form>
   );
-} 
+}

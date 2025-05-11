@@ -1,6 +1,5 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 
 // Mock do next/router
 jest.mock('next/router', () => ({
@@ -45,8 +44,8 @@ jest.mock('@sentry/nextjs', () => ({
 // Mock next/image
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props) => {
+  default: props => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, jsx-a11y/alt-text
     return <img {...props} />;
   },
-})); 
+}));

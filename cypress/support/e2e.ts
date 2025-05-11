@@ -7,4 +7,4 @@ declare global {
       // Adicione comandos customizados aqui se necessário
     }
   }
-} 
+}

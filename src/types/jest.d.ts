@@ -1,7 +1,10 @@
 import '@testing-library/jest-dom';
 
-declare module '@testing-library/jest-dom' {
-  interface Matchers<R> {
-    toBeInTheDocument(): R;
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveClass(...classNames: string[]): R;
+    }
   }
-} 
+}

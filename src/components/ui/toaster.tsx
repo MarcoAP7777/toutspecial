@@ -8,4 +8,4 @@ const SonnerToaster = dynamic(() => import('sonner').then(mod => mod.Toaster), {
 
 export function Toaster() {
   return <SonnerToaster richColors position="top-right" />;
-} 
+}

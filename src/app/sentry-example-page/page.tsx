@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import * as Sentry from '@sentry/nextjs';
 import Head from 'next/head';
@@ -40,9 +40,14 @@ export default function SentryExamplePage() {
       <main>
         <p>
           Para mais detalhes sobre como configurar o Sentry,{' '}
-          <a target="_blank" rel="noreferrer" href="https://docs.sentry.io/platforms/javascript/guides/nextjs/">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="https://docs.sentry.io/platforms/javascript/guides/nextjs/"
+          >
             leia nossa documentação
-          </a>.
+          </a>
+          .
         </p>
       </main>
     </div>

@@ -95,9 +95,7 @@ export function SidebarNav() {
 
   const toggleSubmenu = (menuName: string) => {
     setOpenMenus(prev =>
-      prev.includes(menuName)
-        ? prev.filter(name => name !== menuName)
-        : [...prev, menuName]
+      prev.includes(menuName) ? prev.filter(name => name !== menuName) : [...prev, menuName]
     );
   };
 
@@ -106,7 +104,7 @@ export function SidebarNav() {
 
   return (
     <nav className="space-y-1">
-      {menuItems.map((item) => (
+      {menuItems.map(item => (
         <div key={item.name} className="space-y-1">
           {item.submenu ? (
             <>
@@ -129,14 +127,15 @@ export function SidebarNav() {
               </button>
               {isSubmenuOpen(item.name) && (
                 <div className="space-y-1 pl-10">
-                  {item.submenu.map((subItem) => (
+                  {item.submenu.map(subItem => (
                     <Link
                       key={subItem.href}
                       href={subItem.href}
                       className={`flex items-center px-3 py-2 text-sm font-medium rounded-md
-                        ${isActive(subItem.href)
-                          ? 'bg-gray-100 text-gray-900'
-                          : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                        ${
+                          isActive(subItem.href)
+                            ? 'bg-gray-100 text-gray-900'
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                         }`}
                     >
                       {subItem.name}
@@ -164,4 +163,4 @@ export function SidebarNav() {
       ))}
     </nav>
   );
-} 
+}

@@ -1,25 +1,25 @@
-'use client'
+'use client';
 
 import {
   ShoppingBagIcon,
   UsersIcon,
   CurrencyDollarIcon,
-  ShoppingCartIcon
-} from '@heroicons/react/24/outline'
-import { ComponentType } from 'react'
+  ShoppingCartIcon,
+} from '@heroicons/react/24/outline';
+import { ComponentType } from 'react';
 
 interface DashboardCardProps {
-  title: string
-  value: string
-  icon: ComponentType<{ className?: string }>
-  change: string
+  title: string;
+  value: string;
+  icon: ComponentType<{ className?: string }>;
+  change: string;
 }
 
 export default function DashboardPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <DashboardCard
           title="Total de Vendas"
@@ -27,24 +27,9 @@ export default function DashboardPage() {
           icon={CurrencyDollarIcon}
           change="+12%"
         />
-        <DashboardCard
-          title="Pedidos"
-          value="156"
-          icon={ShoppingCartIcon}
-          change="+8%"
-        />
-        <DashboardCard
-          title="Produtos"
-          value="432"
-          icon={ShoppingBagIcon}
-          change="+5%"
-        />
-        <DashboardCard
-          title="Clientes"
-          value="1.245"
-          icon={UsersIcon}
-          change="+15%"
-        />
+        <DashboardCard title="Pedidos" value="156" icon={ShoppingCartIcon} change="+8%" />
+        <DashboardCard title="Produtos" value="432" icon={ShoppingBagIcon} change="+5%" />
+        <DashboardCard title="Clientes" value="1.245" icon={UsersIcon} change="+15%" />
       </div>
 
       {/* Placeholder para gráficos e outras informações */}
@@ -64,7 +49,7 @@ export default function DashboardPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function DashboardCard({ title, value, icon: Icon, change }: DashboardCardProps) {
@@ -79,5 +64,5 @@ function DashboardCard({ title, value, icon: Icon, change }: DashboardCardProps)
         <Icon className="h-12 w-12 text-indigo-500" />
       </div>
     </div>
-  )
-} 
+  );
+}

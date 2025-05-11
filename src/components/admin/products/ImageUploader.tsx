@@ -1,52 +1,52 @@
-'use client'
+'use client';
 
-import { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import Image from 'next/image'
-import { ProductImageFormData } from '@/lib/validations/product'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import Image from 'next/image';
+import { ProductImageFormData } from '@/lib/validations/product';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 
 interface ImageUploaderProps {
-  images: ProductImageFormData[]
-  onChange: (images: ProductImageFormData[]) => void
-  maxImages?: number
+  images: ProductImageFormData[];
+  onChange: (images: ProductImageFormData[]) => void;
+  maxImages?: number;
 }
 
-const DraggableImage = ({ 
-  image, 
-  index, 
-  moveImage, 
-  onRemove 
-}: { 
-  image: ProductImageFormData
-  index: number
-  moveImage: (dragIndex: number, hoverIndex: number) => void
-  onRemove: (index: number) => void
+const DraggableImage = ({
+  image,
+  index,
+  moveImage,
+  onRemove,
+}: {
+  image: ProductImageFormData;
+  index: number;
+  moveImage: (dragIndex: number, hoverIndex: number) => void;
+  onRemove: (index: number) => void;
 }) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'IMAGE',
     item: { index },
-    collect: (monitor) => ({
+    collect: monitor => ({
       isDragging: monitor.isDragging(),
     }),
-  }))
+  }));
 
   const [, drop] = useDrop(() => ({
     accept: 'IMAGE',
     hover: (item: { index: number }) => {
       if (item.index !== index) {
-        moveImage(item.index, index)
-        item.index = index
+        moveImage(item.index, index);
+        item.index = index;
       }
     },
-  }))
+  }));
 
   return (
     <div
-      ref={(node) => drag(drop(node))}
+      ref={node => drag(drop(node))}
       className={`relative group ${isDragging ? 'opacity-50' : ''}`}
     >
       <Card className="p-2">
@@ -60,7 +60,7 @@ const DraggableImage = ({
         <input
           type="text"
           value={image.alt}
-          onChange={(e) => {
+          onChange={e => {
             // Implementar alteração do alt text
           }}
           className="mt-2 w-full text-sm"
@@ -76,60 +76,69 @@ const DraggableImage = ({
         </Button>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 export const ImageUploader = ({ images, onChange, maxImages = 10 }: ImageUploaderProps) => {
-  const [error, setError] = useState<string>('')
+  const [error, setError] = useState<string>('');
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (images.length + acceptedFiles.length > maxImages) {
-      setError(`Máximo de ${maxImages} imagens permitido`)
-      return
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (images.length + acceptedFiles.length > maxImages) {
+        setError(`Máximo de ${maxImages} imagens permitido`);
+        return;
+      }
 
-    // Aqui você implementaria o upload real para seu servidor/storage
-    const newImages = acceptedFiles.map((file, index) => ({
-      url: URL.createObjectURL(file),
-      alt: file.name,
-      display_order: images.length + index
-    }))
+      // Aqui você implementaria o upload real para seu servidor/storage
+      const newImages = acceptedFiles.map((file, index) => ({
+        url: URL.createObjectURL(file),
+        alt: file.name,
+        display_order: images.length + index,
+      }));
 
-    onChange([...images, ...newImages])
-    setError('')
-  }, [images, maxImages, onChange])
+      onChange([...images, ...newImages]);
+      setError('');
+    },
+    [images, maxImages, onChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp']
-    }
-  })
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp'],
+    },
+  });
 
-  const moveImage = useCallback((dragIndex: number, hoverIndex: number) => {
-    const newImages = [...images]
-    const draggedImage = newImages[dragIndex]
-    newImages.splice(dragIndex, 1)
-    newImages.splice(hoverIndex, 0, draggedImage)
-    
-    // Atualizar display_order
-    newImages.forEach((img, idx) => {
-      img.display_order = idx
-    })
-    
-    onChange(newImages)
-  }, [images, onChange])
+  const moveImage = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const newImages = [...images];
+      const draggedImage = newImages[dragIndex];
+      newImages.splice(dragIndex, 1);
+      newImages.splice(hoverIndex, 0, draggedImage);
 
-  const removeImage = useCallback((index: number) => {
-    const newImages = images.filter((_, idx) => idx !== index)
-    
-    // Atualizar display_order
-    newImages.forEach((img, idx) => {
-      img.display_order = idx
-    })
-    
-    onChange(newImages)
-  }, [images, onChange])
+      // Atualizar display_order
+      newImages.forEach((img, idx) => {
+        img.display_order = idx;
+      });
+
+      onChange(newImages);
+    },
+    [images, onChange]
+  );
+
+  const removeImage = useCallback(
+    (index: number) => {
+      const newImages = images.filter((_, idx) => idx !== index);
+
+      // Atualizar display_order
+      newImages.forEach((img, idx) => {
+        img.display_order = idx;
+      });
+
+      onChange(newImages);
+    },
+    [images, onChange]
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -162,5 +171,5 @@ export const ImageUploader = ({ images, onChange, maxImages = 10 }: ImageUploade
         </div>
       </div>
     </DndProvider>
-  )
-} 
+  );
+};

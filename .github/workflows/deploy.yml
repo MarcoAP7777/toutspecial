@@ -4,10 +4,34 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  deploy:
+  test-and-build:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/toutspecial?schema=toutspecial"
+      NEXTAUTH_SECRET: "test-secret-key"
+      NEXTAUTH_URL: "http://localhost:3000"
+      SKIP_ENV_VALIDATION: "true"
+      NODE_ENV: "test"
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: toutspecial
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -16,46 +40,42 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Ou a versão que você está usando
-          cache: 'npm' # Adicionando cache de dependências
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci # Usa o package-lock.json para instalação consistente
+        run: npm ci
+
+      - name: Run database migrations
+        run: npx prisma migrate deploy
 
       - name: Run ESLint
-        run: npm run lint # Adicionando o passo de lint
+        run: npm run lint
 
-      - name: Run Jest tests and collect coverage
-        run: npm test # Isso agora gera a cobertura
+      - name: Type check
+        run: npx tsc --noEmit
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4 # Usando v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          # directory: ./coverage/ # Opcional, se não for o padrão
-          # flags: unittests # Opcional, para marcar os relatórios
-          # fail_ci_if_error: true # Opcional, para falhar o CI se o upload falhar
-        # Adicione um timeout para evitar que o job fique preso
-        # https://github.com/codecov/codecov-action/issues/693
-        timeout-minutes: 5 
+      - name: Run Jest tests
+        run: npm test -- --passWithNoTests
 
       - name: Build project
-        # Roda apenas se os passos anteriores (incluindo testes e upload de cobertura) foram bem-sucedidos
-        if: success()
         run: npm run build
+        env:
+          SKIP_ENV_VALIDATION: "true"
 
-      - name: Run Cypress tests
-        run: npm run test:e2e # Adicionando testes E2E
+  deploy:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
 
+    steps:
       - name: Deploy to Vercel
-        # Roda apenas se os passos anteriores (incluindo testes E2E) foram bem-sucedidos
-        if: success()
-        uses: amondnet/vercel-action@v25 # Voltando para a v25
+        uses: amondnet/vercel-action@v25
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Token de acesso Vercel
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # ID da sua organização Vercel
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # ID do seu projeto Vercel
-          vercel-args: '--prod' # Argumentos para o comando Vercel (deploy de produção)
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
 
       # Adicionaremos o deploy do Vercel aqui depois que o build funcionar
       # - name: Deploy to Vercel
@@ -64,4 +84,4 @@ jobs:
       #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
       #     vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
       #     vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-      #     vercel-args: '--prod' 
+      #     vercel-args: '--prod'

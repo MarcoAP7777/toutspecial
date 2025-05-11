@@ -1,21 +1,21 @@
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ProductFormData, productSchema } from '@/lib/validations/product'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { ImageUploader } from './ImageUploader'
-import { VariantManager } from './VariantManager'
-import { Editor } from '@/components/ui/editor' // Componente de editor WYSIWYG a ser implementado
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ProductFormData, productSchema } from '@/lib/validations/product';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { ImageUploader } from './ImageUploader';
+import { VariantManager } from './VariantManager';
+import { Editor } from '@/components/ui/editor'; // Componente de editor WYSIWYG a ser implementado
 
 interface ProductFormProps {
-  initialData?: Partial<ProductFormData>
-  onSubmit: (data: ProductFormData) => Promise<{ success: boolean; product?: any; error?: string }>
-  brands: Array<{ id: string; name: string }>
-  categories: Array<{ category_id: string; name: string }>
-  colors: Array<{ id: string; name: string; hex_code: string }>
-  sizes: Array<{ id: string; name: string }>
-  garmentTypes: Array<{ id: string; name: string }>
-  occasions: Array<{ occasions_id: string; name: string }>
+  initialData?: Partial<ProductFormData>;
+  onSubmit: (data: ProductFormData) => Promise<{ success: boolean; product?: any; error?: string }>;
+  brands: Array<{ id: string; name: string }>;
+  categories: Array<{ category_id: string; name: string }>;
+  colors: Array<{ id: string; name: string; hex_code: string }>;
+  sizes: Array<{ id: string; name: string }>;
+  garmentTypes: Array<{ id: string; name: string }>;
+  occasions: Array<{ occasions_id: string; name: string }>;
 }
 
 export const ProductForm = ({
@@ -26,24 +26,24 @@ export const ProductForm = ({
   colors,
   sizes,
   garmentTypes,
-  occasions
+  occasions,
 }: ProductFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    watch
+    watch,
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       is_active: true,
-      ...initialData
-    }
-  })
+      ...initialData,
+    },
+  });
 
-  const images = watch('images') || []
-  const variants = watch('variants') || []
+  const images = watch('images') || [];
+  const variants = watch('variants') || [];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -58,9 +58,7 @@ export const ProductForm = ({
               {...register('name')}
               className="w-full rounded-md border border-gray-300"
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
           </div>
 
           <div>
@@ -70,17 +68,12 @@ export const ProductForm = ({
               {...register('slug')}
               className="w-full rounded-md border border-gray-300"
             />
-            {errors.slug && (
-              <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>
-            )}
+            {errors.slug && <p className="text-red-500 text-sm mt-1">{errors.slug.message}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium mb-1">Marca</label>
-            <select
-              {...register('brand_id')}
-              className="w-full rounded-md border border-gray-300"
-            >
+            <select {...register('brand_id')} className="w-full rounded-md border border-gray-300">
               <option value="">Selecione uma marca</option>
               {brands.map(brand => (
                 <option key={brand.id} value={brand.id}>
@@ -123,10 +116,7 @@ export const ProductForm = ({
 
         <div className="mt-4">
           <label className="block text-sm font-medium mb-1">Descrição Completa</label>
-          <Editor
-            value={watch('description')}
-            onChange={(value) => setValue('description', value)}
-          />
+          <Editor value={watch('description')} onChange={value => setValue('description', value)} />
           {errors.description && (
             <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
           )}
@@ -208,13 +198,8 @@ export const ProductForm = ({
       {/* Imagens */}
       <Card className="p-6">
         <h2 className="text-lg font-semibold mb-4">Imagens</h2>
-        <ImageUploader
-          images={images}
-          onChange={(newImages) => setValue('images', newImages)}
-        />
-        {errors.images && (
-          <p className="text-red-500 text-sm mt-1">{errors.images.message}</p>
-        )}
+        <ImageUploader images={images} onChange={newImages => setValue('images', newImages)} />
+        {errors.images && <p className="text-red-500 text-sm mt-1">{errors.images.message}</p>}
       </Card>
 
       {/* Variações */}
@@ -222,13 +207,11 @@ export const ProductForm = ({
         <h2 className="text-lg font-semibold mb-4">Variações</h2>
         <VariantManager
           variants={variants}
-          onChange={(newVariants) => setValue('variants', newVariants)}
+          onChange={newVariants => setValue('variants', newVariants)}
           colors={colors}
           sizes={sizes}
         />
-        {errors.variants && (
-          <p className="text-red-500 text-sm mt-1">{errors.variants.message}</p>
-        )}
+        {errors.variants && <p className="text-red-500 text-sm mt-1">{errors.variants.message}</p>}
       </Card>
 
       {/* Informações Adicionais */}
@@ -254,11 +237,7 @@ export const ProductForm = ({
           </div>
 
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              {...register('is_active')}
-              className="rounded border-gray-300"
-            />
+            <input type="checkbox" {...register('is_active')} className="rounded border-gray-300" />
             <label className="ml-2 text-sm">Produto Ativo</label>
           </div>
         </div>
@@ -273,5 +252,5 @@ export const ProductForm = ({
         </Button>
       </div>
     </form>
-  )
-} 
+  );
+};

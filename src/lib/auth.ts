@@ -28,10 +28,7 @@ export async function signJWT(payload: UserData) {
 
 export async function verifyJWT(token: string): Promise<UserData | null> {
   try {
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(JWT_SECRET)
-    );
+    const { payload } = await jwtVerify(token, new TextEncoder().encode(JWT_SECRET));
     return payload as UserData;
   } catch (error) {
     console.error('Error verifying JWT:', error);
@@ -74,6 +71,6 @@ export const MOCK_USERS = [
     email: 'admin@toutspecial.com',
     password: 'admin123', // Em produção, usar hash
     name: 'Administrador',
-    role: 'ADMIN' as const
-  }
-]; 
+    role: 'ADMIN' as const,
+  },
+];

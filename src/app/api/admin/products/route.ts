@@ -11,10 +11,7 @@ export async function GET() {
     return NextResponse.json(products);
   } catch (error) {
     console.error('Erro ao listar produtos:', error);
-    return NextResponse.json(
-      { error: 'Erro ao listar produtos' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao listar produtos' }, { status: 500 });
   }
 }
 
@@ -30,9 +27,6 @@ export async function POST(request: Request) {
     return NextResponse.json(product);
   } catch (error) {
     console.error('Erro ao criar produto:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar produto' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao criar produto' }, { status: 500 });
   }
-} 
+}

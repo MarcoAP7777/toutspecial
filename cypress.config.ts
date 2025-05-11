@@ -1,5 +1,5 @@
-import { defineConfig } from 'cypress'
-import vitePreprocessor from '@cypress/vite-dev-server'
+import { defineConfig } from 'cypress';
+import vitePreprocessor from '@cypress/vite-dev-server';
 
 export default defineConfig({
   e2e: {
@@ -9,17 +9,17 @@ export default defineConfig({
     video: false, // Desabilitar gravação de vídeo no CI por padrão
     screenshotOnRunFailure: true, // Tira screenshot se um teste falhar no CI
     setupNodeEvents(on, config) {
-      on('dev-server:start', (options) => {
+      on('dev-server:start', options => {
         return vitePreprocessor({
           ...options,
           viteConfig: {
             server: {
-              port: 3000
-            }
-          }
-        })
-      })
-    }
+              port: 3000,
+            },
+          },
+        });
+      });
+    },
   },
   component: {
     devServer: {
@@ -29,4 +29,4 @@ export default defineConfig({
     supportFile: 'cypress/support/component.ts',
     specPattern: 'cypress/component/**/*.cy.{js,jsx,ts,tsx}',
   },
-}) 
+});

@@ -27,9 +27,7 @@ export default async function ProductsPage() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-2xl font-semibold text-gray-900">Produtos</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Lista de todos os produtos da loja
-          </p>
+          <p className="mt-2 text-sm text-gray-700">Lista de todos os produtos da loja</p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <Link
@@ -78,16 +76,13 @@ export default async function ProductsPage() {
                     >
                       Status
                     </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
+                    <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
                       <span className="sr-only">Ações</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  {products.map((product) => (
+                  {products.map(product => (
                     <tr key={product.id}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                         {product.name}
@@ -133,4 +128,4 @@ export default async function ProductsPage() {
       </div>
     </div>
   );
-} 
+}

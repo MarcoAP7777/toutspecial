@@ -13,12 +13,12 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     console.log('Body recebido:', { email: body.email }); // Não logamos a senha por segurança
-    
+
     const { email, password } = loginSchema.parse(body);
     console.log('Dados validados pelo Zod');
 
     const user = await prisma.users.findUnique({
-      where: { 
+      where: {
         email,
       },
       select: {
@@ -33,33 +33,27 @@ export async function POST(request: Request) {
 
     if (!user) {
       console.log('Usuário não encontrado');
-      return NextResponse.json(
-        { error: 'Credenciais inválidas' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
     }
 
     const isValidPassword = await comparePasswords(password, user.password);
     console.log('Validação de senha:', isValidPassword ? 'Senha válida' : 'Senha inválida');
-    
+
     if (!isValidPassword) {
       console.log('Senha inválida');
-      return NextResponse.json(
-        { error: 'Credenciais inválidas' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Credenciais inválidas' }, { status: 401 });
     }
 
     const userWithoutPassword = { ...user };
     delete userWithoutPassword.password;
-    
+
     const token = await signToken(userWithoutPassword);
     await setAuthCookie(token);
 
     console.log('Login bem-sucedido para:', userWithoutPassword.email);
-    return NextResponse.json({ 
+    return NextResponse.json({
       user: userWithoutPassword,
-      message: 'Login realizado com sucesso'
+      message: 'Login realizado com sucesso',
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -68,7 +62,7 @@ export async function POST(request: Request) {
       console.error('Detalhes do erro:', {
         name: error.name,
         message: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
     }
 
@@ -79,9 +73,6 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json(
-      { error: 'Erro ao processar login' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao processar login' }, { status: 500 });
   }
-} 
+}

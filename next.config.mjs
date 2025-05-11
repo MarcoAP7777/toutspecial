@@ -9,6 +9,6 @@ const nextConfig = {
     scrollRestoration: true,
     instrumentationHook: true,
   },
-}
+};
 
-export default nextConfig 
+export default nextConfig;

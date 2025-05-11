@@ -12,17 +12,22 @@ jest.mock('@/components/ui/toaster', () => ({
   Toaster: () => null,
 }));
 
-const renderWithLayout = (children: ReactElement) => {
-  return render(<RootLayout>{children}</RootLayout>);
-};
+// Mock do next/font/google
+jest.mock('next/font/google', () => ({
+  Inter: () => ({
+    variable: 'mock-font-variable',
+  }),
+}));
 
 describe('RootLayout', () => {
   it('renders children correctly', async () => {
     await act(async () => {
       render(
-        <RootLayout>
-          <div data-testid="test-child">Test Content</div>
-        </RootLayout>
+        <div id="root">
+          <RootLayout>
+            <div data-testid="test-child">Test Content</div>
+          </RootLayout>
+        </div>
       );
     });
 
@@ -32,13 +37,15 @@ describe('RootLayout', () => {
   it('applies font classes', async () => {
     await act(async () => {
       render(
-        <RootLayout>
-          <div>Test Content</div>
-        </RootLayout>
+        <div id="root">
+          <RootLayout>
+            <div>Test Content</div>
+          </RootLayout>
+        </div>
       );
     });
 
-    const container = screen.getByText('Test Content').parentElement;
+    const container = screen.getByText('Test Content').closest('div');
     expect(container).toHaveClass('min-h-screen', 'bg-gray-50');
   });
-}); 
+});

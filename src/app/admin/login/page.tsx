@@ -1,77 +1,77 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
-import { toast } from 'sonner'
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { toast } from 'sonner';
 
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres')
-})
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+});
 
-type LoginFormData = z.infer<typeof loginSchema>
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function AdminLogin() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const redirectTo = searchParams ? searchParams.get('from') : null
-  const from = redirectTo || '/admin/dashboard'
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams ? searchParams.get('from') : null;
+  const from = redirectTo || '/admin/dashboard';
 
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
   } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema)
-  })
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      setIsLoading(true)
-      console.log('Enviando requisição de login:', { email: data.email })
-      
+      setIsLoading(true);
+      console.log('Enviando requisição de login:', { email: data.email });
+
       const response = await fetch('/api/admin/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
         body: JSON.stringify(data),
-        credentials: 'include'
-      })
+        credentials: 'include',
+      });
 
-      console.log('Status da resposta:', response.status)
-      const contentType = response.headers.get('content-type')
-      console.log('Content-Type da resposta:', contentType)
+      console.log('Status da resposta:', response.status);
+      const contentType = response.headers.get('content-type');
+      console.log('Content-Type da resposta:', contentType);
 
       if (!response.ok) {
-        const errorText = await response.text()
-        console.error('Erro na resposta:', errorText)
+        const errorText = await response.text();
+        console.error('Erro na resposta:', errorText);
         try {
-          const errorJson = JSON.parse(errorText)
-          throw new Error(errorJson.error || 'Erro ao fazer login')
+          const errorJson = JSON.parse(errorText);
+          throw new Error(errorJson.error || 'Erro ao fazer login');
         } catch (e) {
-          throw new Error('Erro ao processar resposta do servidor')
+          throw new Error('Erro ao processar resposta do servidor');
         }
       }
 
-      const result = await response.json()
-      console.log('Login bem-sucedido:', result)
+      const result = await response.json();
+      console.log('Login bem-sucedido:', result);
 
-      toast.success('Login realizado com sucesso!')
-      router.push(from)
+      toast.success('Login realizado com sucesso!');
+      router.push(from);
     } catch (error) {
-      console.error('Erro durante o login:', error)
-      toast.error(error instanceof Error ? error.message : 'Erro ao fazer login')
+      console.error('Erro durante o login:', error);
+      toast.error(error instanceof Error ? error.message : 'Erro ao fazer login');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -84,9 +84,7 @@ export default function AdminLogin() {
             height={150}
             className="mx-auto"
           />
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            Painel Administrativo
-          </h2>
+          <h2 className="mt-6 text-3xl font-bold text-gray-900">Painel Administrativo</h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
@@ -100,9 +98,7 @@ export default function AdminLogin() {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 placeholder="seu@email.com"
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
@@ -129,5 +125,5 @@ export default function AdminLogin() {
         </form>
       </div>
     </div>
-  )
-} 
+  );
+}

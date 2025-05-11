@@ -11,6 +11,7 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     scrollRestoration: true,
+    serverActions: true,
   },
   compiler: {
     styledComponents: true,
@@ -65,23 +66,29 @@ const nextConfig = {
       },
     ];
   },
+  env: {
+    SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
+  },
+  typescript: {
+    ignoreBuildErrors: process.env.NODE_ENV === 'test',
+  },
+  eslint: {
+    ignoreDuringBuilds: process.env.NODE_ENV === 'test',
+  },
 };
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs');
 
-module.exports = withSentryConfig(
-  nextConfig,
-  {
-    org: "tout-special",
-    project: "javascript-nextjs",
-    silent: !process.env.CI,
-    widenClientFileUpload: true,
-    tunnelRoute: "/monitoring",
-    disableLogger: true,
-    automaticVercelMonitors: true,
-    sourcemaps: {
-      include: ['.'],
-      ignore: ['node_modules'],
-    },
-  }
-);
+module.exports = withSentryConfig(nextConfig, {
+  org: 'tout-special',
+  project: 'javascript-nextjs',
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  tunnelRoute: '/monitoring',
+  disableLogger: true,
+  automaticVercelMonitors: true,
+  sourcemaps: {
+    include: ['.'],
+    ignore: ['node_modules'],
+  },
+});

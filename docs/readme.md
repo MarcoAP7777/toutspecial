@@ -65,18 +65,19 @@ Este projeto é o novo e-commerce da **Tout Spécial**, uma loja de moda com con
 
 ## 🗂️ Documentação Técnica
 
-| Documento                                     | Descrição |
-|----------------------------------------------|------------|
-| [`docs/etapas.md`](./docs/etapas.md)         | Etapas detalhadas do projeto |
-| [`docs/frontend.md`](./docs/frontend.md)     | UX e arquitetura da loja |
-| [`docs/infra.md`](./docs/infra.md)           | Infraestrutura, DNS, cache, backups |
-| [`docs/seo.md`](./docs/seo.md)               | Técnicas de SEO OnPage e técnico |
-| [`docs/modelagem.md`](./docs/modelagem.md)   | Modelagem de dados com índices e enums |
-| [`docs/paginacao-estrategia.md`](./docs/paginacao-estrategia.md) | Estratégia de paginação para SEO e UX |
-| [`docs/schema-strategy.md`](./docs/schema-strategy.md) | Estratégia de uso de schema markup |
-| [`docs/requisitos.md`](./docs/requisitos.md) | Regras de negócio e requisitos não-funcionais |
-| [`docs/admin.md`](./docs/admin.md)           | 
-| [`docs/fashion-attributes-guide.md`](./docs/fashion-attributes-guide.md) |define os atributos técnicos padronizados usados no cadastro de produtos
+| Documento                                                                | Descrição                                                                |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| [`docs/etapas.md`](./docs/etapas.md)                                     | Etapas detalhadas do projeto                                             |
+| [`docs/frontend.md`](./docs/frontend.md)                                 | UX e arquitetura da loja                                                 |
+| [`docs/infra.md`](./docs/infra.md)                                       | Infraestrutura, DNS, cache, backups                                      |
+| [`docs/seo.md`](./docs/seo.md)                                           | Técnicas de SEO OnPage e técnico                                         |
+| [`docs/modelagem.md`](./docs/modelagem.md)                               | Modelagem de dados com índices e enums                                   |
+| [`docs/paginacao-estrategia.md`](./docs/paginacao-estrategia.md)         | Estratégia de paginação para SEO e UX                                    |
+| [`docs/schema-strategy.md`](./docs/schema-strategy.md)                   | Estratégia de uso de schema markup                                       |
+| [`docs/requisitos.md`](./docs/requisitos.md)                             | Regras de negócio e requisitos não-funcionais                            |
+| [`docs/admin.md`](./docs/admin.md)                                       |
+| [`docs/fashion-attributes-guide.md`](./docs/fashion-attributes-guide.md) | define os atributos técnicos padronizados usados no cadastro de produtos |
+
 ---
 
 ## 🚀 Rodando Localmente
@@ -90,16 +91,16 @@ pnpm dev
 
 ---
 
-## 🤖 Notas para IA  
-- **Objetivo principal**: Criar um e-commerce de moda performático e fácil de manter.  
-- **Prioridades**:  
-  1. SEO e Core Web Vitals.  
-  2. Integração perfeita com Vindi.  
-  3. Painel admin intuitivo.  
-- **Padrões de código**:  
-  - Componentes React nomeados como `ProductCard.tsx`, `ShowcaseGrid.tsx`.  
-  - APIs REST em `/api/*` com validação Zod.  
+## 🤖 Notas para IA
 
+- **Objetivo principal**: Criar um e-commerce de moda performático e fácil de manter.
+- **Prioridades**:
+  1. SEO e Core Web Vitals.
+  2. Integração perfeita com Vindi.
+  3. Painel admin intuitivo.
+- **Padrões de código**:
+  - Componentes React nomeados como `ProductCard.tsx`, `ShowcaseGrid.tsx`.
+  - APIs REST em `/api/*` com validação Zod.
 
 ## 📌 Observações Finais
 
@@ -116,4 +117,3 @@ Para contribuições, abra uma issue ou envie um PR com descrição clara do que
 ---
 
 Com carinho, pela equipe da **Tout Spécial 💖**
-

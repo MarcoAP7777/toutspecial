@@ -55,4 +55,4 @@ describe('Card Components', () => {
     const card = screen.getByText('Content').parentElement;
     expect(card).toHaveClass('custom-class');
   });
-}); 
+});
